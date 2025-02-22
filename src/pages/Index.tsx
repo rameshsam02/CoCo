@@ -21,6 +21,7 @@ const Index = () => {
 
   const handleDisconnect = async () => {
     console.log('Conversation disconnected');
+    console.log('Current messages:', messages);
     
     // Get the last two AI messages
     const aiMessages = messages
@@ -29,9 +30,14 @@ const Index = () => {
       .map(msg => msg.text)
       .join('\n');
 
+    console.log('Filtered AI messages:', aiMessages);
+
     if (aiMessages) {
       setIsProcessing(true);
+      console.log('Making API call with prompt:', aiMessages);
+      
       try {
+        console.log('Starting API request...');
         const response = await fetch('https://ef38-155-33-133-54.ngrok-free.app/research/presentation', {
           method: 'POST',
           headers: {
@@ -40,12 +46,14 @@ const Index = () => {
           body: JSON.stringify({ prompt: aiMessages }),
         });
 
+        console.log('API response status:', response.status);
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error(`Network response was not ok: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('Research response:', data);
+        console.log('Research response data:', data);
         
         // Clear messages and close sidebar
         setMessages([]);
@@ -63,9 +71,11 @@ const Index = () => {
           description: "Failed to process the conversation.",
         });
       } finally {
+        console.log('API call completed, isProcessing set to false');
         setIsProcessing(false);
       }
     } else {
+      console.log('No AI messages found, clearing state');
       setMessages([]);
       setIsRecording(false);
     }
