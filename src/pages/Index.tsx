@@ -58,55 +58,26 @@ const Index = () => {
               isRecording={isRecording}
               onToggle={handleToggleRecording}
             />
-            
-            {/* Upload Button - Moves to left side when recording */}
-            <div className={cn(
-              "absolute mb-8 transition-all duration-500",
-              isRecording ? "-left-48 top-1/2 -translate-y-1/2" : "bottom-0"
-            )}>
-              <Button 
-                variant="ghost" 
-                size="lg" 
-                className="upload-button hover:bg-blue-400/20 transition-colors"
-                onClick={() => document.getElementById("file-input")?.click()}
-              >
-                <Upload className="mr-2 h-5 w-5" />
-                Upload Documents
-              </Button>
-              <input
-                id="file-input"
-                type="file"
-                className="hidden"
-                accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
-                onChange={handleFileUpload}
-              />
-            </div>
+          </div>
 
-            {/* Live Transcription - Appears on right when recording */}
-            <div className={cn(
-              "absolute right-[-24rem] top-1/2 -translate-y-1/2 w-96 h-[360px] bg-white/90 rounded-lg p-4 shadow-lg backdrop-blur-sm transition-all duration-500 overflow-y-auto",
-              !isRecording && "opacity-0 translate-x-24",
-              isRecording && "opacity-100"
-            )}>
-              <div className="space-y-4">
-                {messages.map((msg, index) => (
-                  <div 
-                    key={msg.timestamp}
-                    className={cn(
-                      "p-3 rounded-lg text-sm",
-                      msg.source === "agent" 
-                        ? "bg-blue-50 text-blue-800" 
-                        : "bg-gray-50 text-gray-800"
-                    )}
-                  >
-                    <span className="font-semibold">
-                      {msg.source === "agent" ? "AI: " : "You: "}
-                    </span>
-                    {msg.text}
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Upload Button */}
+          <div className="mb-8">
+            <Button 
+              variant="ghost" 
+              size="lg" 
+              className="upload-button hover:bg-blue-400/20 transition-colors"
+              onClick={() => document.getElementById("file-input")?.click()}
+            >
+              <Upload className="mr-2 h-5 w-5" />
+              Upload Documents
+            </Button>
+            <input
+              id="file-input"
+              type="file"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
+              onChange={handleFileUpload}
+            />
           </div>
         </div>
 
