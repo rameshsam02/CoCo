@@ -26,45 +26,125 @@
     --radius: 1rem;
   }
 
-  @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-  }
-
   @keyframes pulse-ring {
     0% {
-      transform: scale(0.8) rotate(0deg);
+      transform: scale(0.8);
       opacity: 0.5;
     }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.3;
+    }
     100% {
-      transform: scale(1.1) rotate(360deg);
-      opacity: 0.2;
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes rotate-ring {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 
   @keyframes wave {
-    0% { transform: scaleY(1); }
-    50% { transform: scaleY(0.6); }
-    100% { transform: scaleY(1); }
+    0% { transform: scaleY(0.3); }
+    50% { transform: scaleY(1); }
+    100% { transform: scaleY(0.3); }
   }
 
-  @keyframes colorful-wave {
+  @keyframes slideUpAndFade {
     0% {
-      transform: scale(1);
-      opacity: 0.8;
-      border-color: rgba(14, 165, 233, 0.5);
-    }
-    50% {
-      transform: scale(1.2);
-      opacity: 0.4;
-      border-color: rgba(59, 130, 246, 0.5);
+      opacity: 0.3;
+      transform: translateY(0);
     }
     100% {
-      transform: scale(1.4);
       opacity: 0;
-      border-color: rgba(30, 64, 175, 0.5);
+      transform: translateY(-20px);
     }
+  }
+
+  .voice-circle {
+    @apply relative w-48 h-48 rounded-full flex items-center justify-center cursor-pointer transition-all duration-500;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(59, 130, 246, 0.15));
+  }
+
+  .voice-circle::before {
+    content: '';
+    @apply absolute inset-0 rounded-full;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0.6;
+  }
+
+  .animated-ring {
+    @apply absolute inset-0 rounded-full;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+
+  .animated-ring:nth-child(1) {
+    animation-delay: -1s;
+  }
+
+  .animated-ring:nth-child(2) {
+    animation-delay: -2s;
+  }
+
+  .animated-ring:nth-child(3) {
+    animation-delay: -3s;
+  }
+
+  .rotating-ring {
+    @apply absolute inset-0 rounded-full;
+    border: 1px dashed rgba(59, 130, 246, 0.2);
+    animation: rotate-ring 12s linear infinite;
+  }
+
+  .rotating-ring:nth-child(4) {
+    animation-duration: 12s;
+    animation-direction: reverse;
+  }
+
+  .voice-dot {
+    @apply relative flex items-center justify-center w-32 h-32 rounded-full transition-all duration-500;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.9), rgba(59, 130, 246, 0.9));
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+  }
+
+  .voice-circle.recording {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(185, 28, 28, 0.15));
+  }
+
+  .voice-circle.recording .voice-dot {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.9));
+    box-shadow: 0 8px 32px rgba(239, 68, 68, 0.4);
+  }
+
+  .voice-circle.recording .animated-ring {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .voice-circle.recording .rotating-ring {
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .wave-container {
+    @apply absolute flex items-center justify-center gap-1 transition-all duration-300;
+  }
+
+  .wave-bar {
+    @apply w-1 rounded-full bg-white/70;
+    animation: wave 1.2s ease-in-out infinite;
+    bottom: 35%;
+    height: 30%;
+  }
+
+  .recording .wave-bar {
+    animation-duration: 0.5s;
+    background-color: rgba(255, 255, 255, 0.9);
   }
 
   @keyframes fade-in-up {
@@ -128,8 +208,8 @@
 .main-background {
   @apply fixed inset-0 -z-10;
   background: linear-gradient(135deg, #f6f8ff 0%, #e5eaff 100%);
-  background-size: cover;
-  background-position: center;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
 }
 
 .main-background::after {
@@ -138,69 +218,20 @@
   background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.8) 100%);
 }
 
+.gradient-overlay {
+  @apply absolute inset-0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.8) 100%);
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .content-wrapper {
   @apply relative z-10;
 }
-
-.voice-circle {
-  @apply relative w-48 h-48 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)];
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(30, 64, 175, 0.15);
-}
-
-.voice-circle::before {
-  content: '';
-  @apply absolute w-full h-full rounded-full border-2 border-blue-500/30;
-  animation: pulse-ring 3s linear infinite;
-}
-
-.recording .wave-ring {
-  opacity: 1;
-}
-
-.wave-ring {
-  @apply absolute inset-0 rounded-full border-2 opacity-0;
-  animation: colorful-wave 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-  display: none;
-}
-
-.recording .wave-ring {
-  display: block;
-}
-
-.wave-ring:nth-child(1) { animation-delay: 0s; }
-.wave-ring:nth-child(2) { animation-delay: 0.5s; }
-.wave-ring:nth-child(3) { animation-delay: 1s; }
-.wave-ring:nth-child(4) { animation-delay: 1.5s; }
-
-.voice-dot {
-  @apply w-36 h-36 rounded-full flex items-center justify-center gap-3;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 64, 175, 0.05) 100%);
-  backdrop-filter: blur(4px);
-}
-
-.wave-bar {
-  @apply w-1.5 h-12 rounded-full bg-blue-500 transition-all duration-300;
-  transform-origin: center;
-  animation: wave 1.5s ease-in-out infinite;
-}
-
-.wave-bar:nth-child(1) { height: 32px; }
-.wave-bar:nth-child(2) { animation-delay: 0.2s; height: 48px; }
-.wave-bar:nth-child(3) { animation-delay: 0.3s; height: 40px; }
-.wave-bar:nth-child(4) { animation-delay: 0.4s; height: 36px; }
-
-.recording .wave-bar {
-  @apply bg-blue-500;
-  animation: wave 0.5s ease-in-out infinite;
-}
-
-.recording .wave-bar:nth-child(1) { height: 36px; }
-.recording .wave-bar:nth-child(2) { height: 52px; }
-.recording .wave-bar:nth-child(3) { height: 44px; }
-.recording .wave-bar:nth-child(4) { height: 40px; }
 
 .file-drop-zone {
   @apply mt-6 p-8 border-0 rounded-2xl transition-all duration-300 ease-in-out;

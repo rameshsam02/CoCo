@@ -1,20 +1,20 @@
 
 import { useState } from "react";
-import { Upload, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { Conversation } from "@/components/conversation";
+import { Title } from "@/components/Title";
+import { ChatBubble } from "@/components/ChatBubble";
+import { VoiceButton } from "@/components/VoiceButton";
+import { UploadButton } from "@/components/UploadButton";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
-  const [textInput, setTextInput] = useState("");
+  const [messages, setMessages] = useState<{ text: string; source: string; timestamp: number }[]>([]);
+  const [messageCount, setMessageCount] = useState(0);
 
-  const handleStartRecording = () => {
-    setIsRecording(true);
-  };
-
-  const handleStopRecording = () => {
-    setIsRecording(false);
+  const handleToggleRecording = () => {
+    console.log('Recording toggled:', !isRecording);
+    setIsRecording((prev) => !prev);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,73 +24,115 @@ const Index = () => {
     }
   };
 
+  const handleNewMessage = (message: { text: string; source: string }) => {
+    if (!message.text?.trim()) {
+      console.log('Message text is empty or only whitespace, skipping');
+      return;
+    }
+
+    setMessages(prev => [...prev, { ...message, timestamp: Date.now() }]);
+    setMessageCount(prev => prev + 1);
+  };
+
+  // Get the last message from each source and one older message
+  const latestAgentMessage = messages
+    .filter(m => m.source === 'agent')
+    .slice(-1)[0];
+
+  const latestUserMessage = messages
+    .filter(m => m.source === 'user')
+    .slice(-1)[0];
+
+  const previousMessage = messages
+    .slice(-3, -2)[0];
+
+  // Determine positions based on message count
+  const isAgentTopLeft = messageCount % 4 < 2;
+  const isUserBottomRight = messageCount % 4 < 2;
+
   return (
     <>
-      <div className="main-background" />
-      <div className="content-wrapper min-h-screen px-6 py-12 flex items-center">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center space-y-4 mb-16 animate-slide-up delay-1">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <h1 className="text-5xl font-bold tracking-tight text-gray-900">
-                NerdAI
-              </h1>
-              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-            </div>
-            <p className="text-lg leading-7 text-gray-700 max-w-2xl mx-auto">
-              Your intelligent data companion, transforming business insights through advanced AI analysis.
-            </p>
-          </div>
+      <div className="main-background">
+        <div className="gradient-overlay" />
+      </div>
+      <div className="content-wrapper min-h-screen flex flex-col">
+        {/* Title Section */}
+        <div className="flex-grow-0 pt-16 pb-20">
+          <Title isRecording={isRecording} />
+        </div>
 
-          <div className="flex flex-col items-center justify-center space-y-12">
-            <div
+        {/* Main Content Area */}
+        <div className={cn(
+          "flex-grow flex flex-col items-center justify-start gap-8 transition-all duration-700",
+          isRecording ? "mt-0" : "mt-56"
+        )}>
+          {/* Messages and Voice Button Container */}
+          <div className="relative w-[600px] h-[280px] flex items-center justify-center">
+            {/* Agent messages */}
+            <div 
               className={cn(
-                "voice-circle animate-slide-up delay-2",
-                isRecording && "recording"
+                "absolute w-[300px] transition-all duration-500",
+                isAgentTopLeft ? "top-0 left-0" : "bottom-0 left-0"
               )}
-              onMouseDown={handleStartRecording}
-              onMouseUp={handleStopRecording}
-              onMouseLeave={handleStopRecording}
             >
-              <div className="wave-ring" />
-              <div className="wave-ring" />
-              <div className="wave-ring" />
-              <div className="wave-ring" />
-              <div className={cn("voice-dot", isRecording && "recording")}>
-                <div className="wave-bar" />
-                <div className="wave-bar" />
-                <div className="wave-bar" />
-                <div className="wave-bar" />
+              <div className="space-y-4 relative">
+                {previousMessage?.source === 'agent' && (
+                  <ChatBubble
+                    text={previousMessage.text}
+                    isAgent
+                    isOld
+                  />
+                )}
+                {latestAgentMessage && (
+                  <ChatBubble
+                    text={latestAgentMessage.text}
+                    isAgent
+                  />
+                )}
               </div>
             </div>
 
-            <div className="w-full max-w-xl animate-slide-up delay-3">
-              <div className="query-box">
-                <Textarea
-                  placeholder="Add context or upload documents for enhanced analysis..."
-                  className="min-h-[80px] resize-none bg-transparent border-0 focus:ring-0 px-3 py-2 placeholder:text-gray-500"
-                  value={textInput}
-                  onChange={(e) => setTextInput(e.target.value)}
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="upload-button"
-                  onClick={() => document.getElementById("file-input")?.click()}
-                  title="Upload additional documents for analysis"
-                >
-                  <Upload className="w-5 h-5 text-gray-600" />
-                </Button>
-                <input
-                  id="file-input"
-                  type="file"
-                  className="hidden"
-                  multiple
-                  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
-                  onChange={handleFileUpload}
-                />
+            <VoiceButton 
+              isRecording={isRecording}
+              onToggle={handleToggleRecording}
+            />
+
+            {/* User messages */}
+            <div 
+              className={cn(
+                "absolute w-[300px] transition-all duration-500",
+                isUserBottomRight ? "bottom-0 right-0" : "top-0 right-0"
+              )}
+            >
+              <div className="space-y-4 relative">
+                {previousMessage?.source === 'user' && (
+                  <ChatBubble
+                    text={previousMessage.text}
+                    isOld
+                  />
+                )}
+                {latestUserMessage && (
+                  <ChatBubble
+                    text={latestUserMessage.text}
+                  />
+                )}
               </div>
             </div>
           </div>
+
+          {/* Upload Button */}
+          <div className="mb-8">
+            <UploadButton onFileChange={handleFileUpload} />
+          </div>
+        </div>
+
+        <div className="flex-grow-0">
+          <Conversation 
+            isRecording={isRecording}
+            onStartRecording={handleToggleRecording}
+            onStopRecording={handleToggleRecording}
+            onMessage={handleNewMessage}
+          />
         </div>
       </div>
     </>
