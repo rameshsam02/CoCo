@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Conversation } from "@/components/conversation";
 import { Title } from "@/components/Title";
@@ -14,72 +13,85 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    console.log('📱 Index component messages updated:', messages.length);
+  }, [messages]);
+
   const handleToggleRecording = () => {
-    console.log('Recording toggled:', !isRecording);
-    setIsRecording((prev) => !prev);
+    console.log('🎙️ Toggle recording:', { current: isRecording });
+    setIsRecording(!isRecording);
   };
 
   const handleDisconnect = async () => {
-    console.log('Conversation disconnected');
-    console.log('Current messages:', messages);
-    
+    console.log('🔌 Disconnect handler:', { 
+      messageCount: messages.length,
+      messages: messages.map(m => ({ source: m.source, preview: m.text.substring(0, 50) }))
+    });
+
     // Get the last 5 AI messages
     const aiMessages = messages
       .filter(msg => msg.source === 'agent')
       .slice(-5)
-      .map(msg => msg.text)
-      .join('\n');
+      .map(msg => msg.text);
 
-    console.log('Filtered AI messages:', aiMessages);
+    console.log('🤖 AI messages to process:', aiMessages.length);
 
-    if (aiMessages) {
-      setIsProcessing(true);
-      console.log('Making API call with prompt:', aiMessages);
-      
-      try {
-        console.log('Starting API request...');
-        const response = await fetch('https://ef38-155-33-133-54.ngrok-free.app/research/presentation', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ prompt: aiMessages }),
-        });
+    if (aiMessages.length === 0) {
+      console.log('⚠️ No AI messages to process');
+      return;
+    }
 
-        console.log('API response status:', response.status);
+    const combinedMessages = aiMessages.join('\n');
+    console.log('🚀 Processing messages');
+    setIsProcessing(true);
+    
+    try {
+      const response = await fetch('https://48f5-155-33-133-54.ngrok-free.app/research/presentation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: combinedMessages }),
+      });
 
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Research response data:', data);
-        
-        // Only clear messages and close sidebar after successful API call
-        toast({
-          title: "Research Complete",
-          description: "Your conversation has been processed successfully.",
-        });
-
-        // Now clear the state
-        setMessages([]);
-        setIsRecording(false);
-      } catch (error) {
-        console.error('Error processing research:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to process the conversation.",
-        });
-      } finally {
-        console.log('API call completed, isProcessing set to false');
-        setIsProcessing(false);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status}`);
       }
-    } else {
-      console.log('No AI messages found, clearing state');
+
+      const data = await response.json();
+      console.log('✅ API call successful');
+      console.log(data)
+      
+      toast({
+        title: "Research Complete",
+        description: "Your conversation has been processed successfully.",
+      });
+
+      // Clear messages after successful processing
       setMessages([]);
+    } catch (error) {
+      console.error('❌ Error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to process the conversation.",
+      });
+    } finally {
+      setIsProcessing(false);
       setIsRecording(false);
     }
+  };
+
+  const handleNewMessage = (message: { text: string; source: string }) => {
+    if (!message.text?.trim()) return;
+
+    console.log('📝 New message:', { source: message.source, preview: message.text.substring(0, 50) });
+    
+    setMessages(prev => {
+      const newMessages = [...prev, { ...message, timestamp: Date.now() }];
+      console.log('📝 Messages updated:', newMessages.length);
+      return newMessages;
+    });
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,15 +99,6 @@ const Index = () => {
     if (files?.length) {
       console.log('Files selected:', files);
     }
-  };
-
-  const handleNewMessage = (message: { text: string; source: string }) => {
-    if (!message.text?.trim()) {
-      console.log('Message text is empty or only whitespace, skipping');
-      return;
-    }
-
-    setMessages(prev => [...prev, { ...message, timestamp: Date.now() }]);
   };
 
   return (

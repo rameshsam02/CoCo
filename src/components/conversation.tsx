@@ -19,11 +19,17 @@ export function Conversation({
   onDisconnect 
 }: ConversationProps) {
   const conversation = useConversation({
-    onConnect: () => {},
+    onConnect: () => {
+      console.log('🎤 Conversation connected');
+    },
     onDisconnect: () => {
-      if (onDisconnect) onDisconnect();
+      console.log('🎤 Conversation disconnected');
+      if (onDisconnect) {
+        onDisconnect();
+      }
     },
     onMessage: (message) => {
+      console.log('🎤 Message received:', message.source);
       if (message.source === 'user') {
         onMessage({
           text: message.message || "",
@@ -46,10 +52,14 @@ export function Conversation({
   });
 
   useEffect(() => {
+    console.log('🎤 Recording state effect:', { isRecording, status: conversation.status });
+    
     const handleConversation = async () => {
       if (!isRecording && conversation.status === 'connected') {
+        console.log('🎤 Ending session');
         try {
           await conversation.endSession();
+          console.log('🎤 Session ended');
         } catch (error) {
           console.error('Error ending session:', error);
         }
@@ -57,11 +67,13 @@ export function Conversation({
       }
 
       if (isRecording && !['connected', 'connecting'].includes(conversation.status)) {
+        console.log('🎤 Starting session');
         try {
           await navigator.mediaDevices.getUserMedia({ audio: true });
           await conversation.startSession({
             agentId: '33IwwA9g8LvxCOptQu73',
           });
+          console.log('🎤 Session started');
         } catch (error) {
           console.error('Error starting session:', error);
           onStopRecording();
@@ -73,6 +85,7 @@ export function Conversation({
 
     return () => {
       if (conversation.status === 'connected') {
+        console.log('🎤 Cleanup: ending session');
         conversation.endSession().catch(error => {
           console.error('Error during cleanup:', error);
         });
