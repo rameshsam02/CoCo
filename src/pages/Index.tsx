@@ -18,7 +18,6 @@ const Index = () => {
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle file upload logic here
     const files = e.target.files;
     if (files?.length) {
       // Process files
@@ -30,7 +29,7 @@ const Index = () => {
       <div className="main-background" />
       <div className="content-wrapper min-h-screen px-6 py-12 flex items-center">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center space-y-4 mb-16 animate-slide-up delay-1">
+          <div className="text-center space-y-4 mb-16 animate-slide-up">
             <div className="flex items-center justify-center gap-2 mb-2">
               <h1 className="text-5xl font-bold tracking-tight text-gray-900">
                 NerdAI
@@ -45,7 +44,7 @@ const Index = () => {
           <div className="flex flex-col items-center justify-center space-y-12">
             <div
               className={cn(
-                "voice-circle animate-slide-up delay-2",
+                "voice-circle animate-slide-up delay-1",
                 isRecording && "recording"
               )}
               onMouseDown={handleStartRecording}
@@ -64,10 +63,10 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="w-full max-w-xl animate-slide-up delay-3">
+            <div className="w-full max-w-xl animate-slide-up delay-2">
               <div className="query-box">
                 <Textarea
-                  placeholder="Type your query here or upload documents for analysis..."
+                  placeholder="Add any additional context or upload documents for enhanced analysis. Feel free to include extra details that might help with your query..."
                   className="min-h-[80px] resize-none bg-transparent border-0 focus:ring-0 px-3 py-2 placeholder:text-gray-500"
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
@@ -77,6 +76,7 @@ const Index = () => {
                   size="icon"
                   className="upload-button"
                   onClick={() => document.getElementById("file-input")?.click()}
+                  title="Upload additional documents for analysis"
                 >
                   <Upload className="w-5 h-5 text-gray-600" />
                 </Button>
