@@ -1,20 +1,16 @@
-
 import { useState } from "react";
 import { Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { Conversation } from "@/components/conversation";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [textInput, setTextInput] = useState("");
 
-  const handleStartRecording = () => {
-    setIsRecording(true);
-  };
-
-  const handleStopRecording = () => {
-    setIsRecording(false);
+  const handleToggleRecording = () => {
+    setIsRecording((prev) => !prev);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,9 +43,7 @@ const Index = () => {
                 "voice-circle animate-slide-up delay-2",
                 isRecording && "recording"
               )}
-              onMouseDown={handleStartRecording}
-              onMouseUp={handleStopRecording}
-              onMouseLeave={handleStopRecording}
+              onClick={handleToggleRecording}
             >
               <div className="wave-ring" />
               <div className="wave-ring" />
@@ -89,6 +83,14 @@ const Index = () => {
                   onChange={handleFileUpload}
                 />
               </div>
+            </div>
+
+            <div className="w-full max-w-4xl animate-slide-up delay-4">
+              <Conversation 
+                isRecording={isRecording}
+                onStartRecording={handleToggleRecording}
+                onStopRecording={handleToggleRecording}
+              />
             </div>
           </div>
         </div>
