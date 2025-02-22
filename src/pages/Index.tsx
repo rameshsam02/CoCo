@@ -16,6 +16,11 @@ const Index = () => {
     setIsRecording((prev) => !prev);
   };
 
+  const handleDisconnect = () => {
+    console.log('Conversation disconnected, clearing messages');
+    setMessages([]);
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length) {
@@ -97,6 +102,7 @@ const Index = () => {
                 onStartRecording={handleToggleRecording}
                 onStopRecording={handleToggleRecording}
                 onMessage={handleNewMessage}
+                onDisconnect={handleDisconnect}
               />
             </div>
           </div>

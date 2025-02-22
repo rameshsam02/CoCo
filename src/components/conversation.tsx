@@ -2,20 +2,29 @@
 'use client';
 
 import { useConversation } from '@11labs/react';
-import { useEffect, useState, useRef } from 'react';
-import { cn } from '@/lib/utils';
+import { useEffect } from 'react';
 
 export interface ConversationProps {
   isRecording: boolean;
   onStartRecording: () => void;
   onStopRecording: () => void;
   onMessage?: (message: { text: string; source: string }) => void;
+  onDisconnect?: () => void;
 }
 
-export function Conversation({ isRecording, onStartRecording, onStopRecording, onMessage }: ConversationProps) {
+export function Conversation({ 
+  isRecording, 
+  onStartRecording, 
+  onStopRecording, 
+  onMessage,
+  onDisconnect 
+}: ConversationProps) {
   const conversation = useConversation({
     onConnect: () => console.log('Connected'),
-    onDisconnect: () => console.log('Disconnected'),
+    onDisconnect: () => {
+      console.log('Disconnected');
+      onDisconnect?.();
+    },
     onMessage: (message) => {
       // Detailed message structure logging
       console.log('Raw Message Structure:', {
