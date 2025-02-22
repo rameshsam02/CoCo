@@ -54,7 +54,6 @@ const Index = () => {
             "flex-grow flex flex-col items-center justify-start gap-6 transition-all duration-700",
             isRecording ? "mt-0" : "mt-48"
           )}>
-            {/* Voice Button and Upload Button Container */}
             <div className="flex flex-col items-center gap-6">
               <div className="relative w-[800px] h-[360px] flex items-center justify-center">
                 <VoiceButton 
