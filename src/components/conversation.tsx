@@ -12,8 +12,7 @@ interface ConversationProps {
 
 interface Message {
   text: string;
-  isUser: boolean;
-  timestamp: Date;
+  source: string;
 }
 
 export function Conversation({ isRecording }: ConversationProps) {
@@ -24,11 +23,9 @@ export function Conversation({ isRecording }: ConversationProps) {
     onDisconnect: () => console.log('Disconnected'),
     onMessage: (message) => {
       console.log('Message:', message);
-      // Add the received message to our messages array
       setMessages(prev => [...prev, {
-        text: message.text || "No message content",
-        isUser: false,
-        timestamp: new Date()
+        text: message.message || "No message content",
+        source: message.source || "unknown"
       }]);
     },
     onError: (error) => console.error('Error:', error),
@@ -38,12 +35,9 @@ export function Conversation({ isRecording }: ConversationProps) {
     const handleConversation = async () => {
       if (isRecording && conversation.status !== 'connected') {
         try {
-          // Request microphone permission
           await navigator.mediaDevices.getUserMedia({ audio: true });
-          
-          // Start the conversation with your agent
           await conversation.startSession({
-            agentId: '33IwwA9g8LvxCOptQu73', // Replace with your agent ID
+            agentId: '33IwwA9g8LvxCOptQu73',
           });
         } catch (error) {
           console.error('Failed to start conversation:', error);
@@ -65,19 +59,16 @@ export function Conversation({ isRecording }: ConversationProps) {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${message.source === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
               className={`max-w-[80%] p-3 rounded-lg ${
-                message.isUser
+                message.source === 'user'
                   ? 'bg-blue-500 text-white ml-auto'
                   : 'bg-gray-100 text-gray-800'
               }`}
             >
               <p className="text-sm">{message.text}</p>
-              <span className="text-xs opacity-70 mt-1 block">
-                {message.timestamp.toLocaleTimeString()}
-              </span>
             </div>
           </div>
         ))}
