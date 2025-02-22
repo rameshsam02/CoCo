@@ -98,6 +98,15 @@
     }
   }
 
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1000;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
   .animate-fade-in {
     animation: fade-in 0.3s ease-out forwards;
   }
@@ -109,6 +118,12 @@
   .animate-slide-up {
     opacity: 0;
     animation: slide-up 0.6s cubic-bezier(0.15, 1, 0.3, 1) forwards;
+  }
+
+  .animate-draw {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: draw 3s ease-in-out infinite;
   }
 
   .delay-1 {
