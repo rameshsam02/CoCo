@@ -2,13 +2,14 @@
 'use client';
 
 import { useConversation } from '@11labs/react';
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
-interface ConversationProps {
+export interface ConversationProps {
   isRecording: boolean;
   onStartRecording: () => void;
   onStopRecording: () => void;
-  onMessage: (message: { text: string; source: string }) => void;
+  onMessage?: (message: { text: string; source: string }) => void;
 }
 
 export function Conversation({ isRecording, onStartRecording, onStopRecording, onMessage }: ConversationProps) {
