@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useConversation } from '@11labs/react';
@@ -23,7 +22,7 @@ export function Conversation({
     onConnect: () => console.log('Connected'),
     onDisconnect: () => {
       console.log('Disconnected');
-      onDisconnect?.();
+      onStopRecording();
     },
     onMessage: (message) => {
       // Detailed message structure logging
@@ -66,6 +65,7 @@ export function Conversation({
           console.log('Conversation session started successfully');
         } catch (error) {
           console.error('Failed to start conversation:', error);
+          onStopRecording(); // Stop recording if we fail to start
         }
       } else if (!isRecording && conversation.status === 'connected') {
         console.log('Ending conversation session...');
@@ -74,7 +74,7 @@ export function Conversation({
     };
 
     handleConversation();
-  }, [isRecording, conversation]);
+  }, [isRecording]); // Only depend on isRecording, not conversation
 
   return null;
 }
