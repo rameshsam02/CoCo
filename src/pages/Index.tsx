@@ -63,10 +63,10 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="w-full max-w-xl animate-slide-up delay-2">
+            <div className="w-full max-w-xl animate-slide-up delay-4">
               <div className="query-box">
                 <Textarea
-                  placeholder="Add any additional context or upload documents for enhanced analysis. Feel free to include extra details that might help with your query..."
+                  placeholder="Add context or upload documents for enhanced analysis..."
                   className="min-h-[80px] resize-none bg-transparent border-0 focus:ring-0 px-3 py-2 placeholder:text-gray-500"
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
