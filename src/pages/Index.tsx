@@ -63,7 +63,7 @@ const Index = () => {
               "flex flex-col items-center justify-center min-h-[400px] transition-all duration-700 w-full",
               isRecording ? "-mt-12" : "mt-48"
             )}>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center w-full">
                 <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton 
                     isRecording={isRecording}
@@ -73,7 +73,7 @@ const Index = () => {
                 
                 {/* Upload Button */}
                 <div className={cn(
-                  "transition-all duration-500 mt-[72px] ml-[175px]",
+                  "transition-all duration-500 mt-[72px] w-full flex justify-center",
                   isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
                   <Button 
