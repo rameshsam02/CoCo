@@ -64,13 +64,11 @@ const Index = () => {
               isRecording ? "-mt-12" : "mt-48"
             )}>
               <div className="flex flex-col items-center w-full">
-                <div className="w-full flex items-center justify-center">
-                  <div className="relative w-[360px] h-[360px] flex items-center justify-center">
-                    <VoiceButton 
-                      isRecording={isRecording}
-                      onToggle={handleToggleRecording}
-                    />
-                  </div>
+                <div className="relative w-[360px] h-[360px] flex items-center justify-center">
+                  <VoiceButton 
+                    isRecording={isRecording}
+                    onToggle={handleToggleRecording}
+                  />
                 </div>
                 
                 {/* Upload Button */}
