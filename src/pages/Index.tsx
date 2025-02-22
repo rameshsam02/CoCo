@@ -73,7 +73,7 @@ const Index = () => {
                 
                 {/* Upload Button */}
                 <div className={cn(
-                  "transition-all duration-500 mt-[72px] ml-[120px]",
+                  "transition-all duration-500 mt-[72px] ml-[160px]",
                   isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
                   <Button 
