@@ -24,7 +24,12 @@ const Index = () => {
   return (
     <>
       <div className="main-background" />
-      <div className="content-wrapper min-h-screen px-6 py-12 flex items-center">
+      <div 
+        className={cn(
+          "content-wrapper min-h-screen px-6 py-12 flex items-center transition-all duration-300 ease-in-out transform",
+          isRecording && "-translate-x-80"
+        )}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="text-center space-y-4 mb-16 animate-slide-up delay-1">
             <div className="flex items-center justify-center gap-2 mb-2">
@@ -89,7 +94,6 @@ const Index = () => {
         </div>
       </div>
       
-      {/* Position the Conversation component outside the content wrapper */}
       <Conversation 
         isRecording={isRecording}
         onStartRecording={handleToggleRecording}
