@@ -95,7 +95,7 @@
 
 .main-background {
   @apply fixed inset-0 -z-10;
-  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  background: linear-gradient(135deg, #f6f8ff 0%, #e5eaff 100%);
   background-size: cover;
   background-position: center;
 }
@@ -217,6 +217,10 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(59, 130, 246, 0.2);
   box-shadow: 0 8px 32px 0 rgba(30, 64, 175, 0.1);
+}
+
+.query-box textarea {
+  @apply px-3 py-2;
 }
 
 .query-box:hover {

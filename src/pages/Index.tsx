@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -65,7 +64,7 @@ const Index = () => {
               <div className="query-box">
                 <Textarea
                   placeholder="Type your query here or upload documents for analysis..."
-                  className="min-h-[80px] resize-none bg-transparent border-0 focus:ring-0 p-0 placeholder:text-gray-500"
+                  className="min-h-[80px] resize-none bg-transparent border-0 focus:ring-0 px-3 py-2 placeholder:text-gray-500"
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
                 />
