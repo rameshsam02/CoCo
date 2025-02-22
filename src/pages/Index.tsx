@@ -4,27 +4,76 @@ import { cn } from "@/lib/utils";
 import { Conversation } from "@/components/conversation";
 import { Title } from "@/components/Title";
 import { VoiceButton } from "@/components/VoiceButton";
-import { Upload } from "lucide-react";
+import { Upload, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState<{ text: string; source: string; timestamp: number }[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
 
   const handleToggleRecording = () => {
     console.log('Recording toggled:', !isRecording);
     setIsRecording((prev) => !prev);
   };
 
-  const handleDisconnect = () => {
-    console.log('Conversation disconnected, clearing messages');
-    setMessages([]);
+  const handleDisconnect = async () => {
+    console.log('Conversation disconnected');
+    
+    // Get the last two AI messages
+    const aiMessages = messages
+      .filter(msg => msg.source === 'agent')
+      .slice(-2)
+      .map(msg => msg.text)
+      .join('\n');
+
+    if (aiMessages) {
+      setIsProcessing(true);
+      try {
+        const response = await fetch('https://ef38-155-33-133-54.ngrok-free.app/research/presentation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt: aiMessages }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log('Research response:', data);
+        
+        // Clear messages and close sidebar
+        setMessages([]);
+        setIsRecording(false);
+        
+        toast({
+          title: "Research Complete",
+          description: "Your conversation has been processed successfully.",
+        });
+      } catch (error) {
+        console.error('Error processing research:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to process the conversation.",
+        });
+      } finally {
+        setIsProcessing(false);
+      }
+    } else {
+      setMessages([]);
+      setIsRecording(false);
+    }
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length) {
-      // Process files
       console.log('Files selected:', files);
     }
   };
@@ -44,6 +93,16 @@ const Index = () => {
         <div className="gradient-overlay" />
       </div>
       <div className="relative min-h-screen w-full">
+        {/* Loading Overlay */}
+        {isProcessing && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="bg-white rounded-lg p-6 flex flex-col items-center space-y-4">
+              <Loader className="h-8 w-8 animate-spin text-blue-500" />
+              <p className="text-lg font-medium">Processing your conversation...</p>
+            </div>
+          </div>
+        )}
+
         {/* Main Content */}
         <div className={cn(
           "transition-all duration-500 flex justify-center",
