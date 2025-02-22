@@ -29,7 +29,7 @@ const Index = () => {
       <div className="main-background" />
       <div className="content-wrapper min-h-screen px-6 py-12 flex items-center">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center space-y-4 mb-16 animate-slide-up">
+          <div className="text-center space-y-4 mb-16 animate-slide-up delay-1">
             <div className="flex items-center justify-center gap-2 mb-2">
               <h1 className="text-5xl font-bold tracking-tight text-gray-900">
                 NerdAI
@@ -44,7 +44,7 @@ const Index = () => {
           <div className="flex flex-col items-center justify-center space-y-12">
             <div
               className={cn(
-                "voice-circle animate-slide-up delay-1",
+                "voice-circle animate-slide-up delay-2",
                 isRecording && "recording"
               )}
               onMouseDown={handleStartRecording}
@@ -63,7 +63,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="w-full max-w-xl animate-slide-up delay-4">
+            <div className="w-full max-w-xl animate-slide-up delay-3">
               <div className="query-box">
                 <Textarea
                   placeholder="Add context or upload documents for enhanced analysis..."
