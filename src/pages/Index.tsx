@@ -41,59 +41,64 @@ const Index = () => {
       <div className="relative min-h-screen flex w-full">
         {/* Main Content */}
         <div className={cn(
-          "flex-1 flex flex-col transition-all duration-500 relative",
-          isRecording && "mr-[400px] -translate-x-[200px]"
+          "w-full transition-all duration-500",
+          isRecording ? "pr-[400px]" : ""
         )}>
-          {/* Title Section */}
-          <div className="flex-grow-0 pt-12 pb-8">
-            <Title isRecording={isRecording} />
-          </div>
-
-          {/* Main Content Area */}
           <div className={cn(
-            "flex-grow flex flex-col items-center justify-start gap-6 transition-all duration-700",
-            isRecording ? "mt-0" : "mt-48"
+            "mx-auto max-w-[1000px] relative flex flex-col",
+            isRecording ? "transform -translate-x-[100px]" : ""
           )}>
-            <div className="flex flex-col items-center gap-6">
-              <div className="relative w-[800px] h-[360px] flex items-center justify-center">
-                <VoiceButton 
-                  isRecording={isRecording}
-                  onToggle={handleToggleRecording}
-                />
-              </div>
-              
-              {/* Upload Button */}
-              <div className={cn(
-                "transition-all duration-500",
-                isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              )}>
-                <Button 
-                  variant="ghost" 
-                  size="lg" 
-                  className="upload-button hover:bg-blue-400/20 transition-colors"
-                  onClick={() => document.getElementById("file-input")?.click()}
-                >
-                  <Upload className="mr-2 h-5 w-5" />
-                  Upload Documents
-                </Button>
-                <input
-                  id="file-input"
-                  type="file"
-                  className="hidden"
-                  accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
-                  onChange={handleFileUpload}
-                />
+            {/* Title Section */}
+            <div className="flex-grow-0 pt-12 pb-8">
+              <Title isRecording={isRecording} />
+            </div>
+
+            {/* Main Content Area */}
+            <div className={cn(
+              "flex-grow flex flex-col items-center justify-start gap-6 transition-all duration-700",
+              isRecording ? "mt-0" : "mt-48"
+            )}>
+              <div className="flex flex-col items-center gap-6">
+                <div className="relative w-[800px] h-[360px] flex items-center justify-center">
+                  <VoiceButton 
+                    isRecording={isRecording}
+                    onToggle={handleToggleRecording}
+                  />
+                </div>
+                
+                {/* Upload Button */}
+                <div className={cn(
+                  "transition-all duration-500",
+                  isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                )}>
+                  <Button 
+                    variant="ghost" 
+                    size="lg" 
+                    className="upload-button hover:bg-blue-400/20 transition-colors"
+                    onClick={() => document.getElementById("file-input")?.click()}
+                  >
+                    <Upload className="mr-2 h-5 w-5" />
+                    Upload Documents
+                  </Button>
+                  <input
+                    id="file-input"
+                    type="file"
+                    className="hidden"
+                    accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
+                    onChange={handleFileUpload}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex-grow-0">
-            <Conversation 
-              isRecording={isRecording}
-              onStartRecording={handleToggleRecording}
-              onStopRecording={handleToggleRecording}
-              onMessage={handleNewMessage}
-            />
+            <div className="flex-grow-0">
+              <Conversation 
+                isRecording={isRecording}
+                onStartRecording={handleToggleRecording}
+                onStopRecording={handleToggleRecording}
+                onMessage={handleNewMessage}
+              />
+            </div>
           </div>
         </div>
 
