@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -84,17 +85,16 @@ const Index = () => {
                 />
               </div>
             </div>
-
-            <div className="w-full max-w-4xl animate-slide-up delay-4">
-              <Conversation 
-                isRecording={isRecording}
-                onStartRecording={handleToggleRecording}
-                onStopRecording={handleToggleRecording}
-              />
-            </div>
           </div>
         </div>
       </div>
+      
+      {/* Position the Conversation component outside the content wrapper */}
+      <Conversation 
+        isRecording={isRecording}
+        onStartRecording={handleToggleRecording}
+        onStopRecording={handleToggleRecording}
+      />
     </>
   );
 };
