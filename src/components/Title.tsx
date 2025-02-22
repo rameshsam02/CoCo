@@ -13,14 +13,10 @@ interface TitleProps {
 
 export const Title = ({ isRecording }: TitleProps) => {
   return (
-    <div 
-      className={cn(
-        "text-center transition-all duration-500 absolute w-full",
-        isRecording 
-          ? "top-8" 
-          : "top-[calc(50%-180px)]"
-      )}
-    >
+    <div className={cn(
+      "transition-all duration-500",
+      isRecording ? "relative" : "absolute w-full top-[calc(50%-180px)]"
+    )}>
       <div className="flex items-center justify-center gap-2">
         <h1 className={cn(
           "font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent transition-all duration-500",

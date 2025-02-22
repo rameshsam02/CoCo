@@ -38,28 +38,28 @@ const Index = () => {
       <div className="main-background">
         <div className="gradient-overlay" />
       </div>
-      <div className="relative min-h-screen flex w-full">
+      <div className="relative min-h-screen w-full">
         {/* Main Content */}
         <div className={cn(
-          "w-full transition-all duration-500",
-          isRecording ? "pr-[400px]" : ""
+          "transition-all duration-500 flex justify-center",
+          isRecording ? "mr-[400px]" : ""
         )}>
-          <div className={cn(
-            "mx-auto max-w-[1000px] relative flex flex-col",
-            isRecording ? "transform -translate-x-[100px]" : ""
-          )}>
+          <div className="w-full max-w-[1000px] relative flex flex-col items-center">
             {/* Title Section */}
-            <div className="flex-grow-0 pt-12 pb-8">
+            <div className={cn(
+              "w-full pt-12 pb-8 transition-all duration-500",
+              isRecording ? "flex justify-center" : ""
+            )}>
               <Title isRecording={isRecording} />
             </div>
 
             {/* Main Content Area */}
             <div className={cn(
-              "flex-grow flex flex-col items-center justify-start gap-6 transition-all duration-700",
+              "flex flex-col items-center justify-start gap-6 transition-all duration-700 w-full",
               isRecording ? "mt-0" : "mt-48"
             )}>
               <div className="flex flex-col items-center gap-6">
-                <div className="relative w-[800px] h-[360px] flex items-center justify-center">
+                <div className="relative w-full max-w-[800px] h-[360px] flex items-center justify-center">
                   <VoiceButton 
                     isRecording={isRecording}
                     onToggle={handleToggleRecording}
@@ -91,7 +91,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="flex-grow-0">
+            <div className="flex-grow-0 w-full">
               <Conversation 
                 isRecording={isRecording}
                 onStartRecording={handleToggleRecording}
