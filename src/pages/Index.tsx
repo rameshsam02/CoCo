@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Mic, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -56,17 +56,17 @@ const Index = () => {
             onMouseLeave={handleStopRecording}
           >
             <div className={cn("voice-dot", isRecording && "recording")}>
-              <Mic className={cn(
-                "w-12 h-12 transition-colors duration-300",
-                isRecording ? "text-red-500" : "text-primary"
-              )} />
+              <div className="wave-bar" />
+              <div className="wave-bar" />
+              <div className="wave-bar" />
+              <div className="wave-bar" />
             </div>
           </div>
 
-          <div className="w-full max-w-2xl space-y-4">
+          <div className="w-full max-w-xl space-y-4">
             <Textarea
               placeholder="Type your query here..."
-              className="min-h-[100px] resize-none bg-white/80 backdrop-blur-sm"
+              className="min-h-[80px] resize-none bg-white/40 backdrop-blur-sm border-gray-200 rounded-xl transition-all duration-300 hover:bg-white/60 focus:bg-white/80"
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
             />
@@ -78,7 +78,7 @@ const Index = () => {
               onDrop={handleDrop}
             >
               <div className="flex flex-col items-center justify-center text-gray-500">
-                <Upload className="w-8 h-8 mb-2" />
+                <Upload className="w-8 h-8 mb-3 text-primary/70" />
                 <p className="text-sm">
                   Drag and drop files here, or{" "}
                   <Button
