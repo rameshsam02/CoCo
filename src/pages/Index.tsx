@@ -23,10 +23,10 @@ const Index = () => {
     console.log('Conversation disconnected');
     console.log('Current messages:', messages);
     
-    // Get the last two AI messages
+    // Get the last 5 AI messages
     const aiMessages = messages
       .filter(msg => msg.source === 'agent')
-      .slice(-2)
+      .slice(-5)
       .map(msg => msg.text)
       .join('\n');
 
@@ -55,14 +55,15 @@ const Index = () => {
         const data = await response.json();
         console.log('Research response data:', data);
         
-        // Clear messages and close sidebar
-        setMessages([]);
-        setIsRecording(false);
-        
+        // Only clear messages and close sidebar after successful API call
         toast({
           title: "Research Complete",
           description: "Your conversation has been processed successfully.",
         });
+
+        // Now clear the state
+        setMessages([]);
+        setIsRecording(false);
       } catch (error) {
         console.error('Error processing research:', error);
         toast({
