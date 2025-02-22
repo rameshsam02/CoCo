@@ -41,8 +41,8 @@ const Index = () => {
       <div className="relative min-h-screen flex w-full">
         {/* Main Content */}
         <div className={cn(
-          "flex-1 flex flex-col transition-all duration-500",
-          isRecording && "mr-[400px]"
+          "flex-1 flex flex-col transition-all duration-500 relative",
+          isRecording && "mr-[400px] -translate-x-[200px]"
         )}>
           {/* Title Section */}
           <div className="flex-grow-0 pt-12 pb-8">

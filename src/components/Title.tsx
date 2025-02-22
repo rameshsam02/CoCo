@@ -17,7 +17,7 @@ export const Title = ({ isRecording }: TitleProps) => {
       className={cn(
         "text-center transition-all duration-500 absolute w-full",
         isRecording 
-          ? "top-8 left-0" 
+          ? "top-8 -translate-x-[200px]" 
           : "top-[calc(50%-180px)] left-0"
       )}
     >
