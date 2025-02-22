@@ -45,7 +45,7 @@ export function Conversation({ isRecording }: ConversationProps) {
         } catch (error) {
           console.error('Failed to start conversation:', error);
         }
-      } else if (!isRecording && conversation.status === 'connected') {
+      } else if (!isRecording || conversation.status === 'connected') {
         await conversation.endSession();
       }
     };
