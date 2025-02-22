@@ -60,11 +60,11 @@ const Index = () => {
 
             {/* Main Content Area */}
             <div className={cn(
-              "flex flex-col items-center justify-start gap-6 transition-all duration-700 w-full",
+              "flex flex-col items-center justify-center min-h-[500px] transition-all duration-700 w-full",
               isRecording ? "mt-0" : "mt-48"
             )}>
-              <div className="flex flex-col items-center gap-6 w-full">
-                <div className="relative w-full max-w-[800px] h-[360px] flex items-center justify-center">
+              <div className="flex flex-col items-center gap-12">
+                <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton 
                     isRecording={isRecording}
                     onToggle={handleToggleRecording}
@@ -73,7 +73,7 @@ const Index = () => {
                 
                 {/* Upload Button */}
                 <div className={cn(
-                  "flex justify-center w-full transition-all duration-500",
+                  "transition-all duration-500",
                   isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}>
                   <Button 
