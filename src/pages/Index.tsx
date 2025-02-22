@@ -49,6 +49,10 @@ const Index = () => {
               onMouseUp={handleStopRecording}
               onMouseLeave={handleStopRecording}
             >
+              <div className="wave-ring" />
+              <div className="wave-ring" />
+              <div className="wave-ring" />
+              <div className="wave-ring" />
               <div className={cn("voice-dot", isRecording && "recording")}>
                 <div className="wave-bar" />
                 <div className="wave-bar" />
