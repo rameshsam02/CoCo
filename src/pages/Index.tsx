@@ -38,56 +38,92 @@ const Index = () => {
       <div className="main-background">
         <div className="gradient-overlay" />
       </div>
-      <div className={cn(
-        "content-wrapper min-h-screen flex flex-col transition-all duration-500",
-        isRecording && "-translate-x-48"
-      )}>
-        {/* Title Section */}
-        <div className="flex-grow-0 pt-12 pb-8">
-          <Title isRecording={isRecording} />
-        </div>
-
-        {/* Main Content Area */}
+      <div className="relative min-h-screen flex w-full">
+        {/* Main Content */}
         <div className={cn(
-          "flex-grow flex flex-col items-center justify-start gap-6 transition-all duration-700",
-          isRecording ? "mt-0" : "mt-48"
+          "flex-1 flex flex-col transition-all duration-500",
+          isRecording && "mr-[400px]"
         )}>
-          {/* Voice Button Container */}
-          <div className="relative w-[800px] h-[360px] flex items-center justify-center">
-            <VoiceButton 
-              isRecording={isRecording}
-              onToggle={handleToggleRecording}
-            />
+          {/* Title Section */}
+          <div className="flex-grow-0 pt-12 pb-8">
+            <Title isRecording={isRecording} />
           </div>
 
-          {/* Upload Button */}
-          <div className="mb-8">
-            <Button 
-              variant="ghost" 
-              size="lg" 
-              className="upload-button hover:bg-blue-400/20 transition-colors"
-              onClick={() => document.getElementById("file-input")?.click()}
-            >
-              <Upload className="mr-2 h-5 w-5" />
-              Upload Documents
-            </Button>
-            <input
-              id="file-input"
-              type="file"
-              className="hidden"
-              accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
-              onChange={handleFileUpload}
+          {/* Main Content Area */}
+          <div className={cn(
+            "flex-grow flex flex-col items-center justify-start gap-6 transition-all duration-700",
+            isRecording ? "mt-0" : "mt-48"
+          )}>
+            {/* Voice Button and Upload Button Container */}
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative w-[800px] h-[360px] flex items-center justify-center">
+                <VoiceButton 
+                  isRecording={isRecording}
+                  onToggle={handleToggleRecording}
+                />
+              </div>
+              
+              {/* Upload Button */}
+              <div className={cn(
+                "transition-all duration-500",
+                isRecording ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              )}>
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  className="upload-button hover:bg-blue-400/20 transition-colors"
+                  onClick={() => document.getElementById("file-input")?.click()}
+                >
+                  <Upload className="mr-2 h-5 w-5" />
+                  Upload Documents
+                </Button>
+                <input
+                  id="file-input"
+                  type="file"
+                  className="hidden"
+                  accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
+                  onChange={handleFileUpload}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-grow-0">
+            <Conversation 
+              isRecording={isRecording}
+              onStartRecording={handleToggleRecording}
+              onStopRecording={handleToggleRecording}
+              onMessage={handleNewMessage}
             />
           </div>
         </div>
 
-        <div className="flex-grow-0">
-          <Conversation 
-            isRecording={isRecording}
-            onStartRecording={handleToggleRecording}
-            onStopRecording={handleToggleRecording}
-            onMessage={handleNewMessage}
-          />
+        {/* Transcription Sidebar */}
+        <div className={cn(
+          "fixed right-0 top-0 h-full w-[400px] bg-white/90 backdrop-blur-md shadow-xl transition-all duration-500 transform",
+          isRecording ? "translate-x-0" : "translate-x-full"
+        )}>
+          <div className="p-6 h-full overflow-y-auto">
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">Live Transcription</h3>
+            <div className="space-y-4">
+              {messages.map((msg, index) => (
+                <div 
+                  key={msg.timestamp}
+                  className={cn(
+                    "p-3 rounded-lg text-sm",
+                    msg.source === "agent" 
+                      ? "bg-blue-50 text-blue-800" 
+                      : "bg-gray-50 text-gray-800"
+                  )}
+                >
+                  <span className="font-semibold">
+                    {msg.source === "agent" ? "AI: " : "You: "}
+                  </span>
+                  {msg.text}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>
