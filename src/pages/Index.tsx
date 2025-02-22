@@ -37,18 +37,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4">
-      <div className="max-w-4xl mx-auto pt-20 pb-16">
-        <div className="text-center space-y-4 animate-fade-in-up">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 px-4 flex items-center">
+      <div className="max-w-4xl mx-auto py-8">
+        <div className="text-center space-y-3 animate-fade-in-up mb-8">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             NerdAI
           </h1>
-          <p className="text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg leading-7 text-gray-600 max-w-2xl mx-auto">
             Your intelligent data companion, transforming business insights through advanced AI analysis. Seamlessly process voice, text, and documents for comprehensive data consultation.
           </p>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-center space-y-8">
+        <div className="flex flex-col items-center justify-center space-y-6">
           <div
             className={cn("voice-circle", isRecording && "recording")}
             onMouseDown={handleStartRecording}
