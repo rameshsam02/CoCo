@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [textInput, setTextInput] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleStartRecording = () => {
     setIsRecording(true);
@@ -15,6 +16,12 @@ const Index = () => {
 
   const handleStopRecording = () => {
     setIsRecording(false);
+    // Simulate processing start
+    setIsProcessing(true);
+    // This timeout is just for demonstration - replace with actual processing logic
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, 3000);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,6 +100,16 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Processing Overlay */}
+      {isProcessing && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+          <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-white/20 flex flex-col items-center gap-4">
+            <div className="loading-spinner" />
+            <p className="text-white text-lg font-medium">Processing your request...</p>
+          </div>
+        </div>
+      )}
     </>
   );
 };
