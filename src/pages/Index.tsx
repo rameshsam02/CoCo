@@ -3,24 +3,29 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Conversation } from "@/components/conversation";
 import { Title } from "@/components/Title";
-import { ChatBubble } from "@/components/ChatBubble";
 import { VoiceButton } from "@/components/VoiceButton";
-import { UploadButton } from "@/components/UploadButton";
+import { Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState<{ text: string; source: string; timestamp: number }[]>([]);
-  const [messageCount, setMessageCount] = useState(0);
 
   const handleToggleRecording = () => {
     console.log('Recording toggled:', !isRecording);
     setIsRecording((prev) => !prev);
   };
 
+  const handleDisconnect = () => {
+    console.log('Conversation disconnected, clearing messages');
+    setMessages([]);
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length) {
       // Process files
+      console.log('Files selected:', files);
     }
   };
 
@@ -31,108 +36,103 @@ const Index = () => {
     }
 
     setMessages(prev => [...prev, { ...message, timestamp: Date.now() }]);
-    setMessageCount(prev => prev + 1);
   };
-
-  // Get the last message from each source and one older message
-  const latestAgentMessage = messages
-    .filter(m => m.source === 'agent')
-    .slice(-1)[0];
-
-  const latestUserMessage = messages
-    .filter(m => m.source === 'user')
-    .slice(-1)[0];
-
-  const previousMessage = messages
-    .slice(-3, -2)[0];
-
-  // Determine positions based on message count
-  const isAgentTopLeft = messageCount % 4 < 2;
-  const isUserBottomRight = messageCount % 4 < 2;
 
   return (
     <>
       <div className="main-background">
         <div className="gradient-overlay" />
       </div>
-      <div className="content-wrapper min-h-screen flex flex-col">
-        {/* Title Section */}
-        <div className="flex-grow-0 pt-16 pb-20">
-          <Title isRecording={isRecording} />
-        </div>
-
-        {/* Main Content Area */}
+      <div className="relative min-h-screen w-full">
+        {/* Main Content */}
         <div className={cn(
-          "flex-grow flex flex-col items-center justify-start gap-8 transition-all duration-700",
-          isRecording ? "mt-0" : "mt-56"
+          "transition-all duration-500 flex justify-center",
+          isRecording ? "mr-[400px]" : ""
         )}>
-          {/* Messages and Voice Button Container */}
-          <div className="relative w-[600px] h-[280px] flex items-center justify-center">
-            {/* Agent messages */}
-            <div 
-              className={cn(
-                "absolute w-[300px] transition-all duration-500",
-                isAgentTopLeft ? "top-0 left-0" : "bottom-0 left-0"
-              )}
-            >
-              <div className="space-y-4 relative">
-                {previousMessage?.source === 'agent' && (
-                  <ChatBubble
-                    text={previousMessage.text}
-                    isAgent
-                    isOld
+          <div className="w-full max-w-[1000px] relative flex flex-col items-center">
+            {/* Title Section */}
+            <div className={cn(
+              "w-full pt-12 pb-8 transition-all duration-500",
+              isRecording ? "flex justify-center" : ""
+            )}>
+              <Title isRecording={isRecording} />
+            </div>
+
+            {/* Main Content Area */}
+            <div className={cn(
+              "flex flex-col items-center justify-center min-h-[400px] transition-all duration-700 w-full",
+              isRecording ? "-mt-12" : "mt-48"
+            )}>
+              <div className="flex flex-col items-center w-full">
+                <div className="relative w-[360px] h-[360px] flex items-center justify-center">
+                  <VoiceButton 
+                    isRecording={isRecording}
+                    onToggle={handleToggleRecording}
                   />
-                )}
-                {latestAgentMessage && (
-                  <ChatBubble
-                    text={latestAgentMessage.text}
-                    isAgent
-                  />
-                )}
+                </div>
               </div>
             </div>
 
-            <VoiceButton 
-              isRecording={isRecording}
-              onToggle={handleToggleRecording}
-            />
-
-            {/* User messages */}
-            <div 
-              className={cn(
-                "absolute w-[300px] transition-all duration-500",
-                isUserBottomRight ? "bottom-0 right-0" : "top-0 right-0"
-              )}
-            >
-              <div className="space-y-4 relative">
-                {previousMessage?.source === 'user' && (
-                  <ChatBubble
-                    text={previousMessage.text}
-                    isOld
-                  />
-                )}
-                {latestUserMessage && (
-                  <ChatBubble
-                    text={latestUserMessage.text}
-                  />
-                )}
-              </div>
+            <div className="flex-grow-0 w-full">
+              <Conversation 
+                isRecording={isRecording}
+                onStartRecording={handleToggleRecording}
+                onStopRecording={handleToggleRecording}
+                onMessage={handleNewMessage}
+                onDisconnect={handleDisconnect}
+              />
             </div>
-          </div>
-
-          {/* Upload Button */}
-          <div className="mb-8">
-            <UploadButton onFileChange={handleFileUpload} />
           </div>
         </div>
 
-        <div className="flex-grow-0">
-          <Conversation 
-            isRecording={isRecording}
-            onStartRecording={handleToggleRecording}
-            onStopRecording={handleToggleRecording}
-            onMessage={handleNewMessage}
-          />
+        {/* Transcription Sidebar */}
+        <div className={cn(
+          "fixed right-0 top-0 h-full w-[400px] bg-white/90 backdrop-blur-md shadow-xl transition-all duration-500 transform",
+          isRecording ? "translate-x-0" : "translate-x-full"
+        )}>
+          <div className="p-6 h-full flex flex-col">
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">Live Transcription</h3>
+            
+            {/* Upload Button */}
+            <Button 
+              variant="ghost" 
+              size="lg" 
+              className="w-full mb-4 bg-blue-400/10 hover:bg-blue-400/20 transition-colors"
+              onClick={() => document.getElementById("file-input")?.click()}
+            >
+              <Upload className="mr-2 h-5 w-5" />
+              Upload Documents
+            </Button>
+            <input
+              id="file-input"
+              type="file"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.txt,.rtf,.odt"
+              onChange={handleFileUpload}
+            />
+            
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="space-y-4">
+                {messages.map((msg, index) => (
+                  <div 
+                    key={msg.timestamp}
+                    className={cn(
+                      "p-3 rounded-lg text-sm",
+                      msg.source === "agent" 
+                        ? "bg-blue-50 text-blue-800" 
+                        : "bg-gray-50 text-gray-800"
+                    )}
+                  >
+                    <span className="font-semibold">
+                      {msg.source === "agent" ? "AI: " : "You: "}
+                    </span>
+                    {msg.text}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

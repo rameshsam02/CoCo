@@ -3,14 +3,21 @@
 import { useConversation } from '@11labs/react';
 import { useEffect } from 'react';
 
-interface ConversationProps {
+export interface ConversationProps {
   isRecording: boolean;
   onStartRecording: () => void;
   onStopRecording: () => void;
-  onMessage: (message: { text: string; source: string }) => void;
+  onMessage?: (message: { text: string; source: string }) => void;
+  onDisconnect?: () => void;
 }
 
-export function Conversation({ isRecording, onStartRecording, onStopRecording, onMessage }: ConversationProps) {
+export function Conversation({ 
+  isRecording, 
+  onStartRecording, 
+  onStopRecording, 
+  onMessage,
+  onDisconnect 
+}: ConversationProps) {
   const conversation = useConversation({
     onConnect: () => console.log('Connected'),
     onDisconnect: () => {
