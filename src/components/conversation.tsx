@@ -19,62 +19,66 @@ export function Conversation({
   onDisconnect 
 }: ConversationProps) {
   const conversation = useConversation({
-    onConnect: () => console.log('Connected'),
+    onConnect: () => {},
     onDisconnect: () => {
-      console.log('Disconnected');
-      onStopRecording();
+      if (onDisconnect) onDisconnect();
     },
     onMessage: (message) => {
-      // Detailed message structure logging
-      console.log('Raw Message Structure:', {
-        type: message.type,
-        source: message.source,
-        message: message.message,
-        full_object: message
-      });
-
-      // Handle messages based on source property
       if (message.source === 'user') {
-        console.log('Processing user message:', message.message);
         onMessage({
           text: message.message || "",
           source: 'user'
         });
       } else if (message.source === 'ai' || message.source === 'assistant') {
-        console.log('Processing agent message:', message.message);
         onMessage({
           text: message.message || "",
           source: 'agent'
         });
-      } else {
-        console.log('Unknown message source:', message);
       }
     },
     onError: (error) => console.error('Error:', error),
+    clientTools: {
+      displayMessage: (parameters: { text: string }) => {
+        alert(parameters.text);
+        return "Message displayed";
+      },
+    },
   });
 
   useEffect(() => {
     const handleConversation = async () => {
-      if (isRecording && conversation.status !== 'connected') {
+      if (!isRecording && conversation.status === 'connected') {
         try {
-          console.log('Starting new conversation session...');
+          await conversation.endSession();
+        } catch (error) {
+          console.error('Error ending session:', error);
+        }
+        return;
+      }
+
+      if (isRecording && !['connected', 'connecting'].includes(conversation.status)) {
+        try {
           await navigator.mediaDevices.getUserMedia({ audio: true });
           await conversation.startSession({
             agentId: '33IwwA9g8LvxCOptQu73',
           });
-          console.log('Conversation session started successfully');
         } catch (error) {
-          console.error('Failed to start conversation:', error);
-          onStopRecording(); // Stop recording if we fail to start
+          console.error('Error starting session:', error);
+          onStopRecording();
         }
-      } else if (!isRecording && conversation.status === 'connected') {
-        console.log('Ending conversation session...');
-        await conversation.endSession();
       }
     };
 
     handleConversation();
-  }, [isRecording]); // Only depend on isRecording, not conversation
+
+    return () => {
+      if (conversation.status === 'connected') {
+        conversation.endSession().catch(error => {
+          console.error('Error during cleanup:', error);
+        });
+      }
+    };
+  }, [isRecording]);
 
   return null;
 }
