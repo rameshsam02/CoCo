@@ -1,13 +1,12 @@
 
 import { useState } from "react";
-import { Upload } from "lucide-react";
+import { Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [textInput, setTextInput] = useState("");
 
   const handleStartRecording = () => {
@@ -18,36 +17,32 @@ const Index = () => {
     setIsRecording(false);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Handle file upload logic here
+    const files = e.target.files;
+    if (files?.length) {
+      // Process files
+    }
   };
 
   return (
     <>
       <div className="main-background" />
-      <div className="content-wrapper min-h-screen px-4 flex items-center">
-        <div className="max-w-4xl mx-auto py-8">
-          <div className="text-center space-y-3 animate-fade-in-up mb-8">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              NerdAI
-            </h1>
-            <p className="text-base sm:text-lg leading-7 text-gray-700 max-w-2xl mx-auto">
-              Your intelligent data companion, transforming business insights through advanced AI analysis. Seamlessly process voice, text, and documents for comprehensive data consultation.
+      <div className="content-wrapper min-h-screen px-6 py-12 flex items-center">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center space-y-4 animate-fade-in-up mb-16">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <h1 className="text-5xl font-bold tracking-tight text-gray-900">
+                NerdAI
+              </h1>
+              <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+            </div>
+            <p className="text-lg leading-7 text-gray-700 max-w-2xl mx-auto">
+              Your intelligent data companion, transforming business insights through advanced AI analysis.
             </p>
           </div>
 
-          <div className="flex flex-col items-center justify-center space-y-6">
+          <div className="flex flex-col items-center justify-center space-y-12">
             <div
               className={cn("voice-circle", isRecording && "recording")}
               onMouseDown={handleStartRecording}
@@ -62,40 +57,30 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="w-full max-w-xl space-y-4">
-              <Textarea
-                placeholder="Type your query here..."
-                className="min-h-[80px] resize-none bg-white/20 backdrop-blur-md border-0 rounded-xl transition-all duration-300 hover:bg-white/30 focus:bg-white/40"
-                value={textInput}
-                onChange={(e) => setTextInput(e.target.value)}
-              />
-
-              <div
-                className={cn("file-drop-zone", isDragging && "drag-active")}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-              >
-                <div className="flex flex-col items-center justify-center text-gray-600">
-                  <Upload className="w-8 h-8 mb-3 text-primary/70" />
-                  <p className="text-sm">
-                    Drag and drop files here, or{" "}
-                    <Button
-                      variant="link"
-                      className="px-0 text-primary hover:text-primary/80"
-                      onClick={() => document.getElementById("file-input")?.click()}
-                    >
-                      browse
-                    </Button>
-                  </p>
-                  <input
-                    id="file-input"
-                    type="file"
-                    className="hidden"
-                    multiple
-                    accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
-                  />
-                </div>
+            <div className="w-full max-w-xl">
+              <div className="query-box">
+                <Textarea
+                  placeholder="Type your query here or upload documents for analysis..."
+                  className="min-h-[80px] resize-none bg-transparent border-0 focus:ring-0 p-0 placeholder:text-gray-500"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value)}
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="upload-button"
+                  onClick={() => document.getElementById("file-input")?.click()}
+                >
+                  <Upload className="w-5 h-5 text-gray-600" />
+                </Button>
+                <input
+                  id="file-input"
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"
+                  onChange={handleFileUpload}
+                />
               </div>
             </div>
           </div>

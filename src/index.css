@@ -10,20 +10,26 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 252 47.4% 74.7%;
+    --primary: 252 71% 83%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --secondary: 262 83% 91%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    --accent: 262 83% 91%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 252 47.4% 74.7%;
+    --ring: 252 71% 83%;
     --radius: 1rem;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
   }
 
   @keyframes pulse-ring {
@@ -77,7 +83,7 @@
 
 .main-background {
   @apply fixed inset-0 -z-10;
-  background-image: url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=2000&q=80');
+  background: linear-gradient(135deg, #f6f8ff 0%, #e5eaff 100%);
   background-size: cover;
   background-position: center;
 }
@@ -85,8 +91,7 @@
 .main-background::after {
   content: '';
   @apply absolute inset-0;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
+  background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.8) 100%);
 }
 
 .content-wrapper {
@@ -94,28 +99,29 @@
 }
 
 .voice-circle {
-  @apply relative w-48 h-48 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105;
-  background: rgba(255, 255, 255, 0.25);
+  @apply relative w-48 h-48 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_30px_rgba(155,135,245,0.3)];
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.17);
+  animation: float 6s ease-in-out infinite;
 }
 
 .voice-circle::before {
   content: '';
   @apply absolute w-full h-full rounded-full;
   animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-  background: rgba(155, 135, 245, 0.15);
+  background: rgba(155, 135, 245, 0.2);
 }
 
 .voice-circle.recording::before {
   animation: pulse-ring 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-  background: rgba(155, 135, 245, 0.3);
+  background: rgba(155, 135, 245, 0.4);
 }
 
 .voice-dot {
-  @apply w-36 h-36 rounded-full flex items-center justify-center gap-2;
-  background: rgba(255, 255, 255, 0.1);
+  @apply w-36 h-36 rounded-full flex items-center justify-center gap-3;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
   backdrop-filter: blur(4px);
 }
 
@@ -167,4 +173,23 @@
   backdrop-filter: blur(12px);
   border: 1px solid rgba(155, 135, 245, 0.3);
   box-shadow: 0 8px 32px 0 rgba(155, 135, 245, 0.2);
+}
+
+.query-box {
+  @apply relative min-h-[120px] p-6 rounded-2xl transition-all duration-300;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.query-box:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 100%);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.upload-button {
+  @apply absolute right-4 bottom-4 p-2 rounded-xl transition-all duration-300 hover:bg-white/30;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
 }
