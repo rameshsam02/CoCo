@@ -4,12 +4,10 @@ import { Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { LoadingScreen } from "@/components/LoadingScreen";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [textInput, setTextInput] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleStartRecording = () => {
     setIsRecording(true);
@@ -17,12 +15,6 @@ const Index = () => {
 
   const handleStopRecording = () => {
     setIsRecording(false);
-    // Simulate processing start
-    setIsProcessing(true);
-    // This timeout is just for demonstration - replace with actual processing logic
-    setTimeout(() => {
-      setIsProcessing(false);
-    }, 3000);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,9 +93,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      {/* Loading Screen */}
-      {isProcessing && <LoadingScreen />}
     </>
   );
 };
