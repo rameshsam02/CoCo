@@ -4,14 +4,17 @@ import { Upload, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { Conversation } from "@/components/conversation";
 
 const Index = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [textInput, setTextInput] = useState("");
 
-  const handleToggleRecording = () => {
-    setIsRecording((prev) => !prev);
+  const handleStartRecording = () => {
+    setIsRecording(true);
+  };
+
+  const handleStopRecording = () => {
+    setIsRecording(false);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,12 +27,7 @@ const Index = () => {
   return (
     <>
       <div className="main-background" />
-      <div 
-        className={cn(
-          "content-wrapper min-h-screen px-6 py-12 flex items-center transition-all duration-300 ease-in-out transform",
-          isRecording && "-translate-x-80"
-        )}
-      >
+      <div className="content-wrapper min-h-screen px-6 py-12 flex items-center">
         <div className="max-w-4xl mx-auto">
           <div className="text-center space-y-4 mb-16 animate-slide-up delay-1">
             <div className="flex items-center justify-center gap-2 mb-2">
@@ -49,7 +47,9 @@ const Index = () => {
                 "voice-circle animate-slide-up delay-2",
                 isRecording && "recording"
               )}
-              onClick={handleToggleRecording}
+              onMouseDown={handleStartRecording}
+              onMouseUp={handleStopRecording}
+              onMouseLeave={handleStopRecording}
             >
               <div className="wave-ring" />
               <div className="wave-ring" />
@@ -93,12 +93,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-      
-      <Conversation 
-        isRecording={isRecording}
-        onStartRecording={handleToggleRecording}
-        onStopRecording={handleToggleRecording}
-      />
     </>
   );
 };
