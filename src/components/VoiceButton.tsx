@@ -53,8 +53,9 @@ export const VoiceButton = ({ isRecording, onToggle }: VoiceButtonProps) => {
                       key={i}
                       className="w-1.5 bg-white rounded-full animate-wave"
                       style={{
-                        height: `${20 + Math.random() * 20}px`,
-                        animationDelay: `${i * 0.1}s`,
+                        height: "24px",
+                        animation: `wave 1s ease-in-out ${i * 0.1}s infinite`,
+                        transformOrigin: "bottom"
                       }}
                     />
                   ))}
@@ -98,6 +99,17 @@ export const VoiceButton = ({ isRecording, onToggle }: VoiceButtonProps) => {
           {isRecording ? "Click to stop recording" : "Click to start recording"}
         </TooltipContent>
       </Tooltip>
+
+      <style>{`
+        @keyframes wave {
+          0%, 100% { 
+            transform: scaleY(0.5);
+          }
+          50% { 
+            transform: scaleY(1);
+          }
+        }
+      `}</style>
     </div>
   );
 };
