@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -114,9 +113,20 @@ const Index = () => {
       <div className="relative min-h-screen w-full">
         {isProcessing && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="bg-white rounded-lg p-6 flex flex-col items-center space-y-4">
-              <Loader className="h-8 w-8 animate-spin text-blue-500" />
-              <p className="text-lg font-medium">Processing your conversation...</p>
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl p-8 flex flex-col items-center space-y-6 max-w-md w-full mx-4 shadow-2xl">
+              <div className="relative">
+                <div className="absolute -inset-1 rounded-full bg-blue-500/30 blur-xl animate-pulse" />
+                <Loader className="h-12 w-12 text-blue-500 relative animate-spin" />
+              </div>
+              <div className="text-center space-y-2">
+                <h2 className="text-xl font-semibold text-gray-900">Processing your conversation...</h2>
+                <p className="text-gray-600">
+                  We're analyzing your conversation and preparing your presentation. This may take a moment.
+                </p>
+              </div>
+              <div className="w-full max-w-[200px] h-1 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 animate-progress" />
+              </div>
             </div>
           </div>
         )}
