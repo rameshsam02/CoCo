@@ -122,7 +122,9 @@ const Presentation = () => {
       const fullHtml = presentationHtml?.replace(
         '<script src="dist/reveal.js"></script>',
         `<script>
-          window.location.search = '?print-pdf';
+          if (!window.location.href.includes('print-pdf')) {
+            window.location.href = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'print-pdf';
+          }
         </script>
         <script src="dist/reveal.js"></script>`
       );
