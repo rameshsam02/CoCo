@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -146,13 +147,19 @@ const Index = () => {
               "flex flex-col items-center justify-center min-h-[400px] transition-all duration-700 w-full",
               isRecording ? "-mt-12" : "mt-48"
             )}>
-              <div className="flex flex-col items-center w-full">
+              <div className="flex flex-col items-center w-full space-y-8">
                 <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton 
                     isRecording={isRecording}
                     onToggle={handleToggleRecording}
                   />
                 </div>
+                <p className={cn(
+                  "text-lg text-gray-700 transition-all duration-500",
+                  isRecording ? "opacity-0 scale-95" : "opacity-100 scale-100"
+                )}>
+                  Just speak your topic, and CoCo will take care of the rest!
+                </p>
               </div>
             </div>
 
