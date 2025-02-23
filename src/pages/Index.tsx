@@ -127,7 +127,7 @@ const Index = () => {
                 <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton isRecording={isRecording} onToggle={handleToggleRecording} />
                 </div>
-                <p className={cn("text-lg font-normal text-gray-700 transition-all duration-300", isRecording ? "" : "-mt-12")}>Just speak your thoughts, and CoCo will take care of the rest!</p>
+                <p className="text-base font-normal text-center">Just speak your thoughts, and CoCo will take care of the rest!</p>
               </div>
             </div>
 
