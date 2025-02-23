@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -7,6 +8,7 @@ import { VoiceButton } from "@/components/VoiceButton";
 import { Upload, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -156,16 +158,24 @@ const Index = () => {
             </Button>
             <input id="file-input" type="file" className="hidden" accept=".pdf,.doc,.docx,.txt,.rtf,.odt" onChange={handleFileUpload} />
             
-            <div className="flex-1 overflow-y-auto">
-              <div className="space-y-4">
-                {messages.map(msg => <div key={msg.timestamp} className={cn("p-3 rounded-lg text-sm", msg.source === "agent" ? "bg-blue-50 text-blue-800" : "bg-gray-50 text-gray-800")}>
+            <ScrollArea className="flex-1">
+              <div className="space-y-4 pr-4">
+                {messages.map(msg => (
+                  <div 
+                    key={msg.timestamp} 
+                    className={cn(
+                      "p-3 rounded-lg text-sm", 
+                      msg.source === "agent" ? "bg-blue-50 text-blue-800" : "bg-gray-50 text-gray-800"
+                    )}
+                  >
                     <span className="font-semibold">
                       {msg.source === "agent" ? "AI: " : "You: "}
                     </span>
-                    {msg.text}
-                  </div>)}
+                    <div className="whitespace-pre-line">{msg.text}</div>
+                  </div>
+                ))}
               </div>
-            </div>
+            </ScrollArea>
           </div>
         </div>
       </div>
