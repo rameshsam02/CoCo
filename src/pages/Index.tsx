@@ -7,27 +7,25 @@ import { VoiceButton } from "@/components/VoiceButton";
 import { Upload, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+
 const Index = () => {
   const navigate = useNavigate();
   const [isRecording, setIsRecording] = useState(false);
-  const [messages, setMessages] = useState<{
-    text: string;
-    source: string;
-    timestamp: number;
-  }[]>([]);
+  const [messages, setMessages] = useState<{ text: string; source: string; timestamp: number }[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+
   useEffect(() => {
     console.log('📱 Index component messages updated:', messages.length);
   }, [messages]);
+
   const handleToggleRecording = () => {
     console.log('🎙️ Toggle recording:', {
       current: isRecording
     });
     setIsRecording(!isRecording);
   };
+
   const handleDisconnect = async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
     console.log('Conversation disconnected');
@@ -80,10 +78,8 @@ const Index = () => {
       setIsRecording(false);
     }
   };
-  const handleNewMessage = (message: {
-    text: string;
-    source: string;
-  }) => {
+
+  const handleNewMessage = (message: { text: string; source: string }) => {
     if (!message.text?.trim()) return;
     console.log('📝 New message:', {
       source: message.source,
@@ -98,23 +94,28 @@ const Index = () => {
       return newMessages;
     });
   };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length) {
       console.log('Files selected:', files);
     }
   };
-  return <>
+
+  return (
+    <>
       <div className="main-background">
         <div className="gradient-overlay" />
       </div>
       <div className="relative min-h-screen w-full">
-        {isProcessing && <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+        {isProcessing && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
             <div className="bg-white rounded-lg p-6 flex flex-col items-center space-y-4">
               <Loader className="h-8 w-8 animate-spin text-blue-500" />
               <p className="text-lg font-medium">Processing your conversation...</p>
             </div>
-          </div>}
+          </div>
+        )}
 
         <div className={cn("transition-all duration-500 flex justify-center", isRecording ? "mr-[400px]" : "")}>
           <div className="w-full max-w-[1000px] relative flex flex-col items-center">
@@ -127,12 +128,20 @@ const Index = () => {
                 <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton isRecording={isRecording} onToggle={handleToggleRecording} />
                 </div>
-                <p className="text-base font-normal text-center">Just speak your thoughts, and CoCo will take care of the rest!</p>
+                <p className={cn("text-base font-normal text-center -mt-8", isRecording ? "" : "")}>
+                  Just speak your thoughts, and CoCo will take care of the rest!
+                </p>
               </div>
             </div>
 
             <div className="flex-grow-0 w-full">
-              <Conversation isRecording={isRecording} onStartRecording={handleToggleRecording} onStopRecording={handleToggleRecording} onMessage={handleNewMessage} onDisconnect={handleDisconnect} />
+              <Conversation 
+                isRecording={isRecording}
+                onStartRecording={handleToggleRecording}
+                onStopRecording={handleToggleRecording}
+                onMessage={handleNewMessage}
+                onDisconnect={handleDisconnect}
+              />
             </div>
           </div>
         </div>
@@ -160,6 +169,8 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </>;
+    </>
+  );
 };
+
 export default Index;
