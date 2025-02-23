@@ -43,7 +43,7 @@ const Index = () => {
       
       try {
         console.log('Starting API request...');
-        const response = await fetch('https://ef38-155-33-133-54.ngrok-free.app/research/presentation', {
+        const response = await fetch('https://e40f-155-33-133-54.ngrok-free.app/research/presentation', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
