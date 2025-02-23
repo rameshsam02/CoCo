@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -206,8 +207,8 @@ const Presentation = () => {
         <PanelResizeHandle className="w-2 hover:w-2 bg-border hover:bg-primary-foreground transition-colors duration-150 cursor-col-resize" />
 
         <Panel minSize={30}>
-          <div className="flex flex-col h-full p-4">
-            <div className="flex items-center mb-4">
+          <div className="flex flex-col h-full bg-white/90 backdrop-blur shadow-xl w-full">
+            <div className="flex items-center p-6 border-b">
               <Button
                 variant="ghost"
                 size="icon"
@@ -216,21 +217,26 @@ const Presentation = () => {
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-semibold">Chat</h2>
+              <h2 className="text-lg font-medium">Chat</h2>
             </div>
 
-            <ScrollArea className="flex-1 pr-4">
-              <div className="space-y-4">
+            <ScrollArea className="flex-1 px-4">
+              <div className="space-y-4 py-3">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "p-4 rounded-lg",
+                      "p-3 text-sm leading-relaxed rounded-lg whitespace-pre-line",
                       message.source === 'user'
-                        ? "bg-primary text-primary-foreground ml-8"
-                        : message.source === 'loading' ? "bg-muted mr-8 animate-pulse" : "bg-muted mr-8",
+                        ? "bg-gray-50 text-gray-800 ml-4"
+                        : message.source === 'loading' 
+                          ? "bg-blue-50 text-blue-800 mr-4 animate-pulse" 
+                          : "bg-blue-50 text-blue-800 mr-4"
                     )}
                   >
+                    <span className="font-semibold inline-block mr-1">
+                      {message.source === 'user' ? 'You:' : message.source === 'agent' ? 'AI:' : ''}
+                    </span>
                     {message.text}
                   </div>
                 ))}
@@ -238,26 +244,33 @@ const Presentation = () => {
               </div>
             </ScrollArea>
 
-            <div className="p-4 border-t bg-white/50 backdrop-blur-sm">
+            <div className="p-4 border-t">
               <div className="relative">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make to the presentation..."}
+                  placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none",
-                    isProcessing ? "bg-gray-100 text-gray-500" : "bg-white/80"
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200",
+                    "transition-all duration-200",
+                    isProcessing 
+                      ? "bg-gray-50 text-gray-500" 
+                      : "bg-white hover:bg-gray-50"
                   )}
                   disabled={isProcessing}
                 />
                 <Button
                   size="icon"
                   onClick={handleSendMessage}
-                  className="absolute right-2 bottom-2 h-8 w-8"
+                  className={cn(
+                    "absolute right-2 bottom-2 h-8 w-8",
+                    "bg-[#7E69AB] hover:bg-[#9b87f5] text-white",
+                    "transition-all duration-200"
+                  )}
                   disabled={!input.trim() || isProcessing}
                 >
-                  <Send className={cn("h-4 w-4", isProcessing && "text-gray-400")} />
+                  <Send className="h-4 w-4" />
                 </Button>
               </div>
             </div>
