@@ -223,18 +223,22 @@ const Presentation = () => {
             <ScrollArea className="flex-1 px-4">
               <div className="space-y-4 py-4">
                 {messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      "p-4 rounded-xl text-sm leading-relaxed",
-                      message.source === 'user'
-                        ? "bg-white border border-gray-200 ml-8 font-normal"
-                        : message.source === 'loading' 
-                          ? "bg-[#D3E4FD] mr-8 animate-pulse font-normal" 
-                          : "bg-[#D3E4FD] mr-8 font-normal"
-                    )}
-                  >
-                    {message.text}
+                  <div key={index} className="space-y-2">
+                    <div className="text-base font-medium px-4">
+                      {message.source === 'user' ? 'You:' : message.source === 'agent' ? 'AI:' : ''}
+                    </div>
+                    <div
+                      className={cn(
+                        "p-6 text-[15px] leading-relaxed rounded-[20px]",
+                        message.source === 'user'
+                          ? "bg-[#F8F9FD] ml-4"
+                          : message.source === 'loading' 
+                            ? "bg-[#F3F6FE] mr-4 animate-pulse" 
+                            : "bg-[#F3F6FE] mr-4 text-[#1237B3]"
+                      )}
+                    >
+                      {message.text}
+                    </div>
                   </div>
                 ))}
                 <div ref={messagesEndRef} />
@@ -249,7 +253,7 @@ const Presentation = () => {
                   onKeyDown={handleKeyDown}
                   placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-sm",
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-[15px]",
                     "transition-all duration-200",
                     isProcessing 
                       ? "bg-gray-50 text-gray-500" 
