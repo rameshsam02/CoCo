@@ -1,9 +1,8 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Send } from "lucide-react";
+import { ArrowLeft, Presentation, Send } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Panel,
@@ -41,7 +40,7 @@ const Presentation = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [isPresentMode, setIsPresentMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const loadingMessageInterval = useRef<NodeJS.Timeout>();
 
@@ -103,9 +102,9 @@ const Presentation = () => {
   };
 
   const handleDownload = async () => {
-    setIsDownloading(true);
+    setIsPresentMode(true);
     setMessages(prev => [...prev, {
-      text: "Opening presentation in print mode...",
+      text: "Opening presentation in present mode...",
       source: 'loading',
       timestamp: Date.now()
     }]);
@@ -135,23 +134,23 @@ const Presentation = () => {
       setMessages(prev => [
         ...prev.filter(msg => msg.source !== 'loading'),
         {
-          text: "Presentation opened in print mode. Use your browser's print function (Ctrl/Cmd + P) to save as PDF.",
+          text: "Presentation opened in present mode. Use your browser's print function (Ctrl/Cmd + P) to save as PDF if needed.",
           source: 'agent',
           timestamp: Date.now()
         }
       ]);
     } catch (error) {
-      console.error('Download error:', error);
+      console.error('Present mode error:', error);
       setMessages(prev => [
         ...prev.filter(msg => msg.source !== 'loading'),
         {
-          text: "Sorry, there was an error opening the presentation in print mode. Please try again.",
+          text: "Sorry, there was an error opening the presentation in present mode. Please try again.",
           source: 'agent',
           timestamp: Date.now()
         }
       ]);
     } finally {
-      setIsDownloading(false);
+      setIsPresentMode(false);
     }
   };
 
@@ -287,14 +286,14 @@ const Presentation = () => {
                       variant="ghost"
                       size="icon"
                       onClick={handleDownload}
-                      disabled={isDownloading}
+                      disabled={isPresentMode}
                       className="text-gray-600 hover:text-gray-900"
                     >
-                      <Download className="h-4 w-4" />
+                      <Presentation className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Download presentation</p>
+                    <p>Enter present mode</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
