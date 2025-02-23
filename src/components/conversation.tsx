@@ -19,17 +19,18 @@ export function Conversation({
   onDisconnect 
 }: ConversationProps) {
   const conversation = useConversation({
-    onConnect: () => {
-      console.log('🎤 Conversation connected');
-    },
+    onConnect: () => {},
     onDisconnect: () => {
       console.log('🎤 Conversation disconnected');
-      if (onDisconnect) {
-        onDisconnect();
-      }
+      // Use Promise.resolve to ensure this runs after state updates
+      Promise.resolve().then(() => {
+        if (onDisconnect) {
+          console.log('🎤 Calling disconnect handler');
+          onDisconnect();
+        }
+      });
     },
     onMessage: (message) => {
-      console.log('🎤 Message received:', message.source);
       if (message.source === 'user') {
         onMessage({
           text: message.message || "",
