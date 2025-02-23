@@ -221,12 +221,12 @@ const Presentation = () => {
             </div>
 
             <ScrollArea className="flex-1 px-4">
-              <div className="space-y-4 py-4">
+              <div className="space-y-3 py-3">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "p-6 text-[13px] leading-relaxed rounded-[20px]",
+                      "p-4 text-[12px] leading-relaxed rounded-[16px]",
                       message.source === 'user'
                         ? "bg-[#F8F9FD] ml-4"
                         : message.source === 'loading' 
@@ -234,7 +234,7 @@ const Presentation = () => {
                           : "bg-[#F3F6FE] mr-4 text-[#1237B3]"
                     )}
                   >
-                    <span className="font-medium block mb-2">
+                    <span className="font-medium block mb-1.5">
                       {message.source === 'user' ? 'You:' : message.source === 'agent' ? 'AI:' : ''}
                     </span>
                     {message.text}
@@ -252,7 +252,7 @@ const Presentation = () => {
                   onKeyDown={handleKeyDown}
                   placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-[13px]",
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-[12px]",
                     "transition-all duration-200",
                     isProcessing 
                       ? "bg-gray-50 text-gray-500" 
