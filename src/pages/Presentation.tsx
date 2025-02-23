@@ -10,6 +10,12 @@ import {
   PanelResizeHandle
 } from "react-resizable-panels";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PresentationData {
   markdown: string;
@@ -235,15 +241,24 @@ const Presentation = () => {
                 </Button>
                 <h2 className="text-lg font-medium">Chat</h2>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleDownload}
-                disabled={isDownloading}
-                className="text-gray-600 hover:text-gray-900"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleDownload}
+                      disabled={isDownloading}
+                      className="text-gray-600 hover:text-gray-900"
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Download presentation</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             <ScrollArea className="flex-1 px-4">
