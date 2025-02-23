@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -113,24 +112,21 @@ const Presentation = () => {
     try {
       const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
       
-      // Create URL by appending print-pdf to the current URL
-      const currentUrl = window.location.href;
-      const printUrl = `${currentUrl}?print-pdf`;
-      const printWindow = window.open(printUrl, '_blank');
+      // Create a blob URL for local environment
+      const htmlBlob = new Blob([presentationHtml || ''], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(htmlBlob);
+      
+      // Open in new window
+      const printWindow = window.open(blobUrl, '_blank');
       
       if (!printWindow) {
         throw new Error('Could not open new window. Please check your popup blocker settings.');
       }
 
-      const fullHtml = presentationHtml?.replace(
-        '<script src="dist/reveal.js"></script>',
-        `<base href="${window.location.origin}">
-        <script src="dist/reveal.js"></script>`
-      );
-
-      printWindow.document.open();
-      printWindow.document.write(fullHtml || '');
-      printWindow.document.close();
+      // Clean up the blob URL after the window is loaded
+      printWindow.onload = () => {
+        URL.revokeObjectURL(blobUrl);
+      };
 
       setMessages(prev => [
         ...prev.filter(msg => msg.source !== 'loading'),
