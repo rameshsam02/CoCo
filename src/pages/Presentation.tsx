@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -112,8 +113,10 @@ const Presentation = () => {
     try {
       const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
       
-      const baseUrl = `${window.location.origin}/presentation?print-pdf`;
-      const printWindow = window.open(baseUrl, '_blank');
+      // Create URL by appending print-pdf to the current URL
+      const currentUrl = window.location.href;
+      const printUrl = `${currentUrl}?print-pdf`;
+      const printWindow = window.open(printUrl, '_blank');
       
       if (!printWindow) {
         throw new Error('Could not open new window. Please check your popup blocker settings.');
