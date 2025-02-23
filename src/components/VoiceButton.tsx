@@ -51,7 +51,7 @@ export const VoiceButton = ({ isRecording, onToggle }: VoiceButtonProps) => {
                   {[...Array(5)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-1.5 bg-white rounded-full"
+                      className="w-1.5 bg-white rounded-full animate-wave"
                       style={{
                         height: "24px",
                         animation: `wave 1s ease-in-out ${i * 0.1}s infinite`,
@@ -100,7 +100,7 @@ export const VoiceButton = ({ isRecording, onToggle }: VoiceButtonProps) => {
         </TooltipContent>
       </Tooltip>
 
-      <style jsx>{`
+      <style>{`
         @keyframes wave {
           0%, 100% { 
             transform: scaleY(0.5);
