@@ -135,7 +135,7 @@ const Presentation = () => {
       setMessages(prev => [
         ...prev.filter(msg => msg.source !== 'loading'),
         {
-          text: "Presentation opened in present mode. Use your browser's print function (Ctrl/Cmd + P) to save as PDF if needed.",
+          text: "Presentation opened in present mode. Enjoy your presentation!",
           source: 'agent',
           timestamp: Date.now()
         }
