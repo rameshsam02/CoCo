@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -206,29 +207,31 @@ const Presentation = () => {
         <PanelResizeHandle className="w-2 hover:w-2 bg-border hover:bg-primary-foreground transition-colors duration-150 cursor-col-resize" />
 
         <Panel minSize={30}>
-          <div className="flex flex-col h-full p-4">
-            <div className="flex items-center mb-4">
+          <div className="flex flex-col h-full bg-gradient-to-br from-[#f6f8ff] to-[#e5eaff]">
+            <div className="flex items-center p-4 border-b border-purple-100/20 backdrop-blur-sm bg-white/30">
               <Button
                 variant="ghost"
                 size="icon"
-                className="mr-2"
+                className="mr-2 hover:bg-purple-100/50"
                 onClick={() => navigate('/')}
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4 text-purple-700" />
               </Button>
-              <h2 className="text-lg font-semibold">Chat</h2>
+              <h2 className="text-lg font-semibold text-purple-900">Chat</h2>
             </div>
 
-            <ScrollArea className="flex-1 pr-4">
-              <div className="space-y-4">
+            <ScrollArea className="flex-1 px-4">
+              <div className="space-y-4 py-4">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "p-4 rounded-lg",
+                      "p-4 rounded-xl backdrop-blur-sm transition-all duration-200",
                       message.source === 'user'
-                        ? "bg-primary text-primary-foreground ml-8"
-                        : message.source === 'loading' ? "bg-muted mr-8 animate-pulse" : "bg-muted mr-8",
+                        ? "bg-[#9b87f5] text-white ml-8"
+                        : message.source === 'loading' 
+                          ? "bg-white/30 mr-8 animate-pulse" 
+                          : "bg-white/30 mr-8"
                     )}
                   >
                     {message.text}
@@ -238,26 +241,33 @@ const Presentation = () => {
               </div>
             </ScrollArea>
 
-            <div className="p-4 border-t bg-white/50 backdrop-blur-sm">
+            <div className="p-4 border-t border-purple-100/20 bg-white/30 backdrop-blur-sm">
               <div className="relative">
                 <Textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make to the presentation..."}
+                  placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none",
-                    isProcessing ? "bg-gray-100 text-gray-500" : "bg-white/80"
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-purple-100/30",
+                    "backdrop-blur-sm transition-all duration-200",
+                    isProcessing 
+                      ? "bg-gray-50/50 text-gray-500" 
+                      : "bg-white/50 hover:bg-white/70 focus:bg-white/90"
                   )}
                   disabled={isProcessing}
                 />
                 <Button
                   size="icon"
                   onClick={handleSendMessage}
-                  className="absolute right-2 bottom-2 h-8 w-8"
+                  className={cn(
+                    "absolute right-2 bottom-2 h-8 w-8",
+                    "bg-[#9b87f5] hover:bg-[#7E69AB] text-white",
+                    "transition-all duration-200"
+                  )}
                   disabled={!input.trim() || isProcessing}
                 >
-                  <Send className={cn("h-4 w-4", isProcessing && "text-gray-400")} />
+                  <Send className="h-4 w-4" />
                 </Button>
               </div>
             </div>
