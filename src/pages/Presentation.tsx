@@ -207,7 +207,7 @@ const Presentation = () => {
         <PanelResizeHandle className="w-2 hover:w-2 bg-border hover:bg-primary-foreground transition-colors duration-150 cursor-col-resize" />
 
         <Panel minSize={30}>
-          <div className="flex flex-col h-full bg-white/90 backdrop-blur shadow-xl w-[400px]">
+          <div className="flex flex-col h-full bg-white/90 backdrop-blur shadow-xl w-full">
             <div className="flex items-center p-6 border-b">
               <Button
                 variant="ghost"
