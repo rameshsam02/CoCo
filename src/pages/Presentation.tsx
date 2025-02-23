@@ -220,7 +220,7 @@ const Presentation = () => {
               <h2 className="text-lg font-medium">Chat</h2>
             </div>
 
-            <ScrollArea className="flex-1 pr-4">
+            <ScrollArea className="flex-1 px-4">
               <div className="space-y-4 py-3">
                 {messages.map((message, index) => (
                   <div
