@@ -217,7 +217,7 @@ const Presentation = () => {
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-semibold">Chat</h2>
+              <h2 className="text-lg font-medium">Chat</h2>
             </div>
 
             <ScrollArea className="flex-1 px-4">
@@ -226,12 +226,12 @@ const Presentation = () => {
                   <div
                     key={index}
                     className={cn(
-                      "p-4 rounded-xl",
+                      "p-4 rounded-xl text-sm leading-relaxed",
                       message.source === 'user'
-                        ? "bg-white border border-gray-200 ml-8"
+                        ? "bg-white border border-gray-200 ml-8 font-normal"
                         : message.source === 'loading' 
-                          ? "bg-[#D3E4FD] mr-8 animate-pulse" 
-                          : "bg-[#D3E4FD] mr-8"
+                          ? "bg-[#D3E4FD] mr-8 animate-pulse font-normal" 
+                          : "bg-[#D3E4FD] mr-8 font-normal"
                     )}
                   >
                     {message.text}
@@ -249,7 +249,7 @@ const Presentation = () => {
                   onKeyDown={handleKeyDown}
                   placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200",
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-sm",
                     "transition-all duration-200",
                     isProcessing 
                       ? "bg-gray-50 text-gray-500" 
