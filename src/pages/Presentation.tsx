@@ -1,8 +1,9 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Presentation, Send } from "lucide-react";
+import { ArrowLeft, Presentation as PresentationIcon, Send } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Panel,
@@ -289,7 +290,7 @@ const Presentation = () => {
                       disabled={isPresentMode}
                       className="text-gray-600 hover:text-gray-900"
                     >
-                      <Presentation className="h-4 w-4" />
+                      <PresentationIcon className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
