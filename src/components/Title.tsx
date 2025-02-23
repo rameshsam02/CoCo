@@ -22,7 +22,7 @@ export const Title = ({ isRecording }: TitleProps) => {
           "font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent transition-all duration-500",
           isRecording ? "text-4xl" : "text-6xl"
         )}>
-          NerdAI
+          CoCo
         </h1>
         <Sparkles className={cn(
           "text-blue-500 animate-pulse transition-all duration-500",
