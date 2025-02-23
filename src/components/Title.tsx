@@ -33,8 +33,9 @@ export const Title = ({ isRecording }: TitleProps) => {
         "flex items-center justify-center gap-2 transition-all duration-500 mt-4",
         isRecording ? "opacity-0 scale-95 h-0" : "opacity-100 scale-100"
       )}>
-        <p className="text-lg text-gray-700 max-w-2xl">
-          Your intelligent data companion, transforming business insights through advanced AI analysis.
+        <p className="text-lg text-gray-700 max-w-2xl text-center">
+          Your voice-powered research companion that transforms conversations into insights.
+          Just speak your topic, and watch as CoCo creates detailed presentation slides for you.
         </p>
         <Tooltip>
           <TooltipTrigger>
