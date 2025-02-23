@@ -16,8 +16,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 interface PresentationData {
   markdown: string;
@@ -111,57 +109,11 @@ const Presentation = () => {
       timestamp: Date.now()
     }]);
 
-    try {
-      const iframe = document.querySelector('iframe');
-      if (!iframe) throw new Error('Presentation iframe not found');
-
-      const iframeDocument = iframe.contentDocument || iframe.contentWindow?.document;
-      if (!iframeDocument) throw new Error('Cannot access iframe content');
-
-      const slides = iframeDocument.querySelectorAll('.slides section');
-      if (!slides.length) throw new Error('No slides found in presentation');
-
-      const pdf = new jsPDF('landscape', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      for (let i = 0; i < slides.length; i++) {
-        const canvas = await html2canvas(slides[i] as HTMLElement, {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          allowTaint: true,
-          foreignObjectRendering: true
-        });
-
-        const imgData = canvas.toDataURL('image/png');
-        if (i > 0) pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      }
-
-      pdf.save('presentation.pdf');
-
-      setMessages(prev => [
-        ...prev.filter(msg => msg.source !== 'loading'),
-        {
-          text: "Your presentation has been downloaded successfully!",
-          source: 'agent',
-          timestamp: Date.now()
-        }
-      ]);
-    } catch (error) {
-      console.error('Download error:', error);
-      setMessages(prev => [
-        ...prev.filter(msg => msg.source !== 'loading'),
-        {
-          text: "Sorry, there was an error downloading your presentation. Please try again.",
-          source: 'agent',
-          timestamp: Date.now()
-        }
-      ]);
-    } finally {
+    setTimeout(() => {
       setIsDownloading(false);
-    }
+      setMessages(prev => prev.filter(msg => msg.source !== 'loading'));
+      console.log("Download functionality to be implemented");
+    }, 2000);
   };
 
   const handleSendMessage = async () => {
