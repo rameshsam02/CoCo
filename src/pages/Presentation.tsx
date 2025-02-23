@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -113,23 +112,19 @@ const Presentation = () => {
     try {
       const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
       
-      const printWindow = window.open('about:blank', '_blank');
+      const baseUrl = `${window.location.origin}/presentation?print-pdf`;
+      const printWindow = window.open(baseUrl, '_blank');
+      
       if (!printWindow) {
         throw new Error('Could not open new window. Please check your popup blocker settings.');
       }
 
-      // Create the full HTML document with the print-pdf parameter in the URL
       const fullHtml = presentationHtml?.replace(
         '<script src="dist/reveal.js"></script>',
-        `<script>
-          if (!window.location.href.includes('print-pdf')) {
-            window.location.href = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'print-pdf';
-          }
-        </script>
+        `<base href="${window.location.origin}">
         <script src="dist/reveal.js"></script>`
       );
 
-      // Write the content and immediately close the document
       printWindow.document.open();
       printWindow.document.write(fullHtml || '');
       printWindow.document.close();
