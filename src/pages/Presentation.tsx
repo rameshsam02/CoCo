@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Presentation as PresentationIcon, Send } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Panel,
@@ -11,6 +11,12 @@ import {
   PanelResizeHandle
 } from "react-resizable-panels";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PresentationData {
   markdown: string;
@@ -35,6 +41,7 @@ const Presentation = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPresentMode, setIsPresentMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const loadingMessageInterval = useRef<NodeJS.Timeout>();
 
@@ -93,6 +100,59 @@ const Presentation = () => {
       loadingMessageInterval.current = undefined;
     }
     setMessages(prev => prev.filter(msg => msg.source !== 'loading'));
+  };
+
+  const handleDownload = async () => {
+    setIsPresentMode(true);
+    setMessages(prev => [...prev, {
+      text: "Opening presentation in present mode...",
+      source: 'loading',
+      timestamp: Date.now()
+    }]);
+
+    try {
+      const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
+      
+      // Create URL by appending print-pdf to the current URL
+      const currentUrl = window.location.href;
+      const printUrl = `${currentUrl}?print-pdf`;
+      const printWindow = window.open(printUrl, '_blank');
+      
+      if (!printWindow) {
+        throw new Error('Could not open new window. Please check your popup blocker settings.');
+      }
+
+      const fullHtml = presentationHtml?.replace(
+        '<script src="dist/reveal.js"></script>',
+        `<base href="${window.location.origin}">
+        <script src="dist/reveal.js"></script>`
+      );
+
+      printWindow.document.open();
+      printWindow.document.write(fullHtml || '');
+      printWindow.document.close();
+
+      setMessages(prev => [
+        ...prev.filter(msg => msg.source !== 'loading'),
+        {
+          text: "Presentation opened in present mode. Enjoy your presentation!",
+          source: 'agent',
+          timestamp: Date.now()
+        }
+      ]);
+    } catch (error) {
+      console.error('Present mode error:', error);
+      setMessages(prev => [
+        ...prev.filter(msg => msg.source !== 'loading'),
+        {
+          text: "Sorry, there was an error opening the presentation in present mode. Please try again.",
+          source: 'agent',
+          timestamp: Date.now()
+        }
+      ]);
+    } finally {
+      setIsPresentMode(false);
+    }
   };
 
   const handleSendMessage = async () => {
@@ -208,16 +268,36 @@ const Presentation = () => {
 
         <Panel minSize={30}>
           <div className="flex flex-col h-full bg-white/90 backdrop-blur shadow-xl w-full">
-            <div className="flex items-center p-6 border-b">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mr-2"
-                onClick={() => navigate('/')}
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <h2 className="text-lg font-medium">Chat</h2>
+            <div className="flex items-center justify-between p-6 border-b">
+              <div className="flex items-center">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="mr-2"
+                  onClick={() => navigate('/')}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+                <h2 className="text-lg font-medium">Chat</h2>
+              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleDownload}
+                      disabled={isPresentMode}
+                      className="text-gray-600 hover:text-gray-900"
+                    >
+                      <PresentationIcon className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Enter present mode</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             <ScrollArea className="flex-1 px-4">
