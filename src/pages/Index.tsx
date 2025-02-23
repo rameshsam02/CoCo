@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -155,11 +156,19 @@ const Index = () => {
             </div>
 
             <div className={cn("flex flex-col items-center justify-center min-h-[400px] transition-all duration-700 w-full", isRecording ? "-mt-12" : "mt-48")}>
-              <div className="flex flex-col items-center w-full space-y-2">
+              <div className="flex flex-col items-center w-full space-y-4">
                 <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton isRecording={isRecording} onToggle={handleToggleRecording} />
                 </div>
-                <p className={cn("text-base font-normal text-center -mt-8", isRecording ? "" : "")}>
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  className="bg-blue-400/10 hover:bg-blue-400/20 transition-colors w-48"
+                  onClick={handleTestTransition}
+                >
+                  Test Presentation
+                </Button>
+                <p className={cn("text-base font-normal text-center -mt-2", isRecording ? "" : "")}>
                   Just speak your thoughts, and CoCo will take care of the rest!
                 </p>
               </div>
@@ -184,9 +193,6 @@ const Index = () => {
             <Button variant="ghost" size="lg" className="w-full mb-4 bg-blue-400/10 hover:bg-blue-400/20 transition-colors" onClick={() => document.getElementById("file-input")?.click()}>
               <Upload className="mr-2 h-5 w-5" />
               Upload Documents
-            </Button>
-            <Button variant="ghost" size="lg" className="w-full mb-4 bg-blue-400/10 hover:bg-blue-400/20 transition-colors" onClick={handleTestTransition}>
-              Test Presentation
             </Button>
             <input id="file-input" type="file" className="hidden" accept=".pdf,.doc,.docx,.txt,.rtf,.odt" onChange={handleFileUpload} />
             
