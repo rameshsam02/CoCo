@@ -1,12 +1,10 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Conversation } from "@/components/conversation";
 import { Title } from "@/components/Title";
 import { VoiceButton } from "@/components/VoiceButton";
-import { Upload, Loader } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Loader } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -162,12 +160,6 @@ const Index = () => {
         <div className={cn("fixed right-0 top-0 h-full w-[400px] bg-white/90 backdrop-blur-md shadow-xl transition-all duration-500 transform", isRecording ? "translate-x-0" : "translate-x-full")}>
           <div className="p-6 h-full flex flex-col">
             <h3 className="text-lg font-semibold mb-4 text-gray-800">Live Transcription</h3>
-            
-            <Button variant="ghost" size="lg" className="w-full mb-4 bg-blue-400/10 hover:bg-blue-400/20 transition-colors" onClick={() => document.getElementById("file-input")?.click()}>
-              <Upload className="mr-2 h-5 w-5" />
-              Upload Documents
-            </Button>
-            <input id="file-input" type="file" className="hidden" accept=".pdf,.doc,.docx,.txt,.rtf,.odt" onChange={handleFileUpload} />
             
             <ScrollArea className="flex-1">
               <div className="space-y-4 pr-4">

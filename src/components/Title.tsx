@@ -26,7 +26,7 @@ export const Title = ({
             <Info className="w-5 h-5 text-blue-500 hover:text-blue-600 transition-colors" />
           </TooltipTrigger>
           <TooltipContent>
-            Speak or upload files to get AI-powered insights
+            Speak to get AI-powered insights
           </TooltipContent>
         </Tooltip>
       </div>
