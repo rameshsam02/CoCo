@@ -1,69 +1,72 @@
-# Welcome to your Lovable project
+# CoCo - Multi-Agent Data Consultant
 
-## Project info
+**CoCo** is an innovative multi-agent data consultant designed to assist users in exploring new business ventures or industries. By engaging in a conversational call, CoCo collects detailed descriptions from users about their target business or industry. It then leverages a team of intelligent agents to perform deep research, delivering a comprehensive presentation filled with factual content, resources, and actionable insights. With its natural language-powered PPT editor, users can customize presentations on the fly, making it a powerful tool for entrepreneurs, researchers, and professionals.
 
-**URL**: https://lovable.dev/projects/373f1c3f-b017-49b0-a3d8-609856aab3f8
+---
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Conversational Data Collection**: Engage in a voice or text-based call where CoCo gathers detailed information about your business or industry of interest.
+- **Multi-Agent Research**: A manager agent orchestrates a team of specialized agents to conduct in-depth research tailored to your input.
+- **Detailed Presentations**: Receive a polished presentation with factual data, resources, and insights generated from the research.
+- **Natural Language PPT Editor**: Edit and customize your presentation using simple, natural language commands.
+- **Real-Time Collaboration**: Modify slides dynamically with an intuitive cursor-based UI.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/373f1c3f-b017-49b0-a3d8-609856aab3f8) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+### Frontend
+- **[Vite](https://vitejs.dev/)**: Lightning-fast build tool for modern web development.
+- **[TypeScript](https://www.typescriptlang.org/)**: Typed JavaScript for scalable and maintainable code.
+- **[React](https://react.dev/)**: Component-based library for building interactive UIs.
+- **[shadcn-ui](https://ui.shadcn.com/)**: Beautifully designed, accessible UI components.
+- **[Tailwind CSS](https://tailwindcss.com/)**: Utility-first CSS framework for rapid styling.
+- **[Lovable](https://lovable.dev/)**: Enhancing the frontend with delightful developer experience.
 
-**Use your preferred IDE**
+### Backend
+- **[FastAPI](https://fastapi.tiangolo.com/)**: High-performance Python framework for building APIs.
+- **[smolagents](https://github.com/smol-ai/agents)**: Multi-agent framework including `CodeAgents`, `DuckDuckGoSearchTool`, and `ToolCallingAgent`.
+- **[GPT-4o-mini](https://openai.com/)**: Lightweight, powerful AI model for natural language processing.
+- **[Ngrok](https://ngrok.com/)**: Secure tunneling to expose local servers to the internet.
+- **[Reveal.js](https://revealjs.com/)**: Framework for creating interactive presentations.
+- **[ElevenLabs](https://elevenlabs.io/)**: Conversational AI powered by Gemini 1.5 Flash for realistic voice interactions.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## How It Works
 
-Follow these steps:
+1. **Start a Call**: Interact with CoCo via voice or text, providing details about the business or industry you’re interested in.
+2. **Data Hand-off**: The conversation data is passed to a manager agent overseeing a team of `CodeAgents`.
+3. **Deep Research**: The agents scour resources, analyze data, and compile a detailed plan.
+4. **Presentation Delivery**: CoCo generates a Reveal.js-based presentation with actionable insights and references.
+5. **Customize**: Use natural language commands to edit slides, tweak content, or adjust styling in real time.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Installation and setup for the front-end:
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/rameshsam02/CoCo
+   cd coco
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+2. **Install Requirements**
+   - Install all dependencies listed in the `package.json` file:
+     ```bash
+     npm install
+     ```
 
-**Edit a file directly in GitHub**
+3. **Configure Environment**
+   - Update the `.env` file to include the URL to the DeepSearch agent:
+     ```
+     VITE_API_URL=INSERT_LINK_HERE
+     ```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+4. **Run the Project**
+   ```bash
+   npm run dev
+   ```
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/373f1c3f-b017-49b0-a3d8-609856aab3f8) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Checkout the backend repo and instructions here: https://github.com/dotvignesh/researchAgentAPI
