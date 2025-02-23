@@ -139,7 +139,7 @@ const Presentation = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Ask me anything about the presentation..."
+                    placeholder="Let me know what changes you'd like to make - I can help with theme, content, layout, or any other improvements..."
                     className="pr-12 min-h-[80px] resize-none bg-white/80"
                   />
                   <Button
