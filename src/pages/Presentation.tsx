@@ -207,8 +207,8 @@ const Presentation = () => {
         <PanelResizeHandle className="w-2 hover:w-2 bg-border hover:bg-primary-foreground transition-colors duration-150 cursor-col-resize" />
 
         <Panel minSize={30}>
-          <div className="flex flex-col h-full bg-white">
-            <div className="flex items-center p-4 border-b">
+          <div className="flex flex-col h-full bg-white/90 backdrop-blur shadow-xl w-[400px]">
+            <div className="flex items-center p-6 border-b">
               <Button
                 variant="ghost"
                 size="icon"
@@ -220,21 +220,21 @@ const Presentation = () => {
               <h2 className="text-lg font-medium">Chat</h2>
             </div>
 
-            <ScrollArea className="flex-1 px-4">
-              <div className="space-y-3 py-3">
+            <ScrollArea className="flex-1 pr-4">
+              <div className="space-y-4 py-3">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "p-4 text-[12px] leading-relaxed rounded-[16px]",
+                      "p-3 text-sm leading-relaxed rounded-lg whitespace-pre-line",
                       message.source === 'user'
-                        ? "bg-[#F8F9FD] ml-4"
+                        ? "bg-gray-50 text-gray-800 ml-4"
                         : message.source === 'loading' 
-                          ? "bg-[#F3F6FE] mr-4 animate-pulse" 
-                          : "bg-[#F3F6FE] mr-4 text-[#1237B3]"
+                          ? "bg-blue-50 text-blue-800 mr-4 animate-pulse" 
+                          : "bg-blue-50 text-blue-800 mr-4"
                     )}
                   >
-                    <span className="font-medium block mb-1.5">
+                    <span className="font-semibold inline-block mr-1">
                       {message.source === 'user' ? 'You:' : message.source === 'agent' ? 'AI:' : ''}
                     </span>
                     {message.text}
@@ -252,7 +252,7 @@ const Presentation = () => {
                   onKeyDown={handleKeyDown}
                   placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-[12px]",
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200",
                     "transition-all duration-200",
                     isProcessing 
                       ? "bg-gray-50 text-gray-500" 
