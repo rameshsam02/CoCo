@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -223,22 +222,21 @@ const Presentation = () => {
             <ScrollArea className="flex-1 px-4">
               <div className="space-y-4 py-4">
                 {messages.map((message, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="text-base font-medium px-4">
+                  <div
+                    key={index}
+                    className={cn(
+                      "p-6 text-[15px] leading-relaxed rounded-[20px]",
+                      message.source === 'user'
+                        ? "bg-[#F8F9FD] ml-4"
+                        : message.source === 'loading' 
+                          ? "bg-[#F3F6FE] mr-4 animate-pulse" 
+                          : "bg-[#F3F6FE] mr-4 text-[#1237B3]"
+                    )}
+                  >
+                    <span className="font-medium block mb-2">
                       {message.source === 'user' ? 'You:' : message.source === 'agent' ? 'AI:' : ''}
-                    </div>
-                    <div
-                      className={cn(
-                        "p-6 text-[15px] leading-relaxed rounded-[20px]",
-                        message.source === 'user'
-                          ? "bg-[#F8F9FD] ml-4"
-                          : message.source === 'loading' 
-                            ? "bg-[#F3F6FE] mr-4 animate-pulse" 
-                            : "bg-[#F3F6FE] mr-4 text-[#1237B3]"
-                      )}
-                    >
-                      {message.text}
-                    </div>
+                    </span>
+                    {message.text}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />
