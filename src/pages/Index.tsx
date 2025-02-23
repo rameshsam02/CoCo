@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Conversation } from "@/components/conversation";
 import { Title } from "@/components/Title";
@@ -8,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState<{ text: string; source: string; timestamp: number }[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -23,61 +26,68 @@ const Index = () => {
   };
 
   const handleDisconnect = async () => {
-    console.log('🔌 Disconnect handler:', { 
-      messageCount: messages.length,
-      messages: messages.map(m => ({ source: m.source, preview: m.text.substring(0, 50) }))
-    });
-
+    console.log('Conversation disconnected');
+    console.log('Current messages:', messages);
+    
     // Get the last 5 AI messages
     const aiMessages = messages
       .filter(msg => msg.source === 'agent')
       .slice(-5)
-      .map(msg => msg.text);
+      .map(msg => msg.text)
+      .join('\n');
 
-    console.log('🤖 AI messages to process:', aiMessages.length);
+    console.log('Filtered AI messages:', aiMessages);
 
-    if (aiMessages.length === 0) {
-      console.log('⚠️ No AI messages to process');
-      return;
-    }
-
-    const combinedMessages = aiMessages.join('\n');
-    console.log('🚀 Processing messages');
-    setIsProcessing(true);
-    
-    try {
-      const response = await fetch('https://48f5-155-33-133-54.ngrok-free.app/research/presentation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: combinedMessages }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('✅ API call successful');
-      console.log(data)
+    if (aiMessages) {
+      setIsProcessing(true);
+      console.log('Making API call with prompt:', aiMessages);
       
-      toast({
-        title: "Research Complete",
-        description: "Your conversation has been processed successfully.",
-      });
+      try {
+        console.log('Starting API request...');
+        const response = await fetch('https://ef38-155-33-133-54.ngrok-free.app/research/presentation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt: aiMessages }),
+        });
 
-      // Clear messages after successful processing
+        console.log('API response status:', response.status);
+
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Research response data:', data);
+        
+        // Navigate to presentation page with the data
+        navigate('/presentation', { 
+          state: { presentationData: data }
+        });
+
+        // Clear messages and close sidebar
+        setMessages([]);
+        setIsRecording(false);
+        
+        toast({
+          title: "Research Complete",
+          description: "Your presentation is ready.",
+        });
+      } catch (error) {
+        console.error('Error processing research:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to process the conversation.",
+        });
+      } finally {
+        console.log('API call completed, isProcessing set to false');
+        setIsProcessing(false);
+      }
+    } else {
+      console.log('No AI messages found, clearing state');
       setMessages([]);
-    } catch (error) {
-      console.error('❌ Error:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to process the conversation.",
-      });
-    } finally {
-      setIsProcessing(false);
       setIsRecording(false);
     }
   };
