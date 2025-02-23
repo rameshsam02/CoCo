@@ -41,7 +41,7 @@ const Index = () => {
       console.log('Making API call with prompt:', aiMessages);
       try {
         console.log('Starting API request...');
-        const response = await fetch('https://6b7a-2601-19b-780-2d10-b4fd-3895-61e-4d11.ngrok-free.app/research/presentation', {
+        const response = await fetch('https://c01f-155-33-133-54.ngrok-free.app/research/presentation', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
