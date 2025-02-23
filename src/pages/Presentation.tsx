@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -225,7 +226,7 @@ const Presentation = () => {
                   <div
                     key={index}
                     className={cn(
-                      "p-6 text-[15px] leading-relaxed rounded-[20px]",
+                      "p-6 text-[13px] leading-relaxed rounded-[20px]",
                       message.source === 'user'
                         ? "bg-[#F8F9FD] ml-4"
                         : message.source === 'loading' 
@@ -251,7 +252,7 @@ const Presentation = () => {
                   onKeyDown={handleKeyDown}
                   placeholder={isProcessing ? "Please wait while I process your request..." : "Please let me know what changes you'd like to make..."}
                   className={cn(
-                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-[15px]",
+                    "pr-12 min-h-[80px] resize-none rounded-xl border-gray-200 text-[13px]",
                     "transition-all duration-200",
                     isProcessing 
                       ? "bg-gray-50 text-gray-500" 
