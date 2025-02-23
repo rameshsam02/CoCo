@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -66,8 +65,7 @@ const Index = () => {
           state: { presentationData: data }
         });
 
-        // Clear messages and close sidebar
-        setMessages([]);
+        // Only stop recording, but keep the message history
         setIsRecording(false);
         
         toast({
@@ -86,8 +84,7 @@ const Index = () => {
         setIsProcessing(false);
       }
     } else {
-      console.log('No AI messages found, clearing state');
-      setMessages([]);
+      console.log('No AI messages found');
       setIsRecording(false);
     }
   };
