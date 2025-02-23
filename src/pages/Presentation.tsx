@@ -104,16 +104,47 @@ const Presentation = () => {
   const handleDownload = async () => {
     setIsDownloading(true);
     setMessages(prev => [...prev, {
-      text: "Preparing your presentation for download...",
+      text: "Opening presentation in print mode...",
       source: 'loading',
       timestamp: Date.now()
     }]);
 
-    setTimeout(() => {
+    try {
+      const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
+      
+      const printWindow = window.open('', '_blank');
+      if (!printWindow) {
+        throw new Error('Could not open new window. Please check your popup blocker settings.');
+      }
+
+      printWindow.document.write(presentationHtml || '');
+      printWindow.document.close();
+
+      const currentUrl = printWindow.location.href;
+      const separator = currentUrl.includes('?') ? '&' : '?';
+      printWindow.location.href = `${currentUrl}${separator}print-pdf`;
+
+      setMessages(prev => [
+        ...prev.filter(msg => msg.source !== 'loading'),
+        {
+          text: "Presentation opened in print mode. Use your browser's print function (Ctrl/Cmd + P) to save as PDF.",
+          source: 'agent',
+          timestamp: Date.now()
+        }
+      ]);
+    } catch (error) {
+      console.error('Download error:', error);
+      setMessages(prev => [
+        ...prev.filter(msg => msg.source !== 'loading'),
+        {
+          text: "Sorry, there was an error opening the presentation in print mode. Please try again.",
+          source: 'agent',
+          timestamp: Date.now()
+        }
+      ]);
+    } finally {
       setIsDownloading(false);
-      setMessages(prev => prev.filter(msg => msg.source !== 'loading'));
-      console.log("Download functionality to be implemented");
-    }, 2000);
+    }
   };
 
   const handleSendMessage = async () => {
