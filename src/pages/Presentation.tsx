@@ -34,6 +34,12 @@ const Presentation = () => {
   useEffect(() => {
     if (location.state?.presentationData) {
       setData(location.state.presentationData);
+      // Add initial welcome message
+      setMessages([{
+        text: "Let me know if you'd like to make any changes to the presentation. I can help you modify the theme, content, layout, or anything else you'd like to adjust. Feel free to suggest any improvements!",
+        source: 'agent',
+        timestamp: Date.now()
+      }]);
     } else {
       navigate('/');
     }
@@ -64,7 +70,7 @@ const Presentation = () => {
     // Simulate agent response (replace with actual agent integration)
     setTimeout(() => {
       const agentMessage: Message = {
-        text: "I'm here to help you with your presentation. What would you like to know?",
+        text: "I'll help you with that. What specific changes would you like to make to the presentation?",
         source: 'agent',
         timestamp: Date.now()
       };
