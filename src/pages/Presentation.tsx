@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -112,17 +113,24 @@ const Presentation = () => {
     try {
       const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
       
-      const printWindow = window.open('', '_blank');
+      const printWindow = window.open('about:blank', '_blank');
       if (!printWindow) {
         throw new Error('Could not open new window. Please check your popup blocker settings.');
       }
 
-      printWindow.document.write(presentationHtml || '');
-      printWindow.document.close();
+      // Create the full HTML document with the print-pdf parameter in the URL
+      const fullHtml = presentationHtml?.replace(
+        '<script src="dist/reveal.js"></script>',
+        `<script>
+          window.location.search = '?print-pdf';
+        </script>
+        <script src="dist/reveal.js"></script>`
+      );
 
-      const currentUrl = printWindow.location.href;
-      const separator = currentUrl.includes('?') ? '&' : '?';
-      printWindow.location.href = `${currentUrl}${separator}print-pdf`;
+      // Write the content and immediately close the document
+      printWindow.document.open();
+      printWindow.document.write(fullHtml || '');
+      printWindow.document.close();
 
       setMessages(prev => [
         ...prev.filter(msg => msg.source !== 'loading'),
