@@ -1,9 +1,12 @@
+
 import { Sparkles, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+
 interface TitleProps {
   isRecording: boolean;
 }
+
 export const Title = ({
   isRecording
 }: TitleProps) => {
@@ -16,9 +19,7 @@ export const Title = ({
       </div>
       <div className={cn("flex items-center justify-center gap-2 transition-all duration-500 mt-4", isRecording ? "opacity-0 scale-95 h-0" : "opacity-100 scale-100")}>
         <p className="text-gray-700 max-w-2xl text-center font-extralight text-lg">
-          Your voice-powered research companion that listens, researches deeply, and transforms your ideas into well-crafted PowerPoint presentations—seamless and efficient.{" "}
-          <br />
-          Just speak your topic, and CoCo will take care of the rest!
+          Your voice-powered research companion that listens, researches deeply, and transforms your ideas into well-crafted PowerPoint presentations—seamless and efficient.
         </p>
         <Tooltip>
           <TooltipTrigger>
