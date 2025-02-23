@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -66,29 +67,6 @@ const Presentation = () => {
     if (!content) return '';
     const match = content.match(/```[\s\S]*?\n([\s\S]*?)```/);
     return match ? match[1] : '';
-  };
-
-  const getStylesForIframe = () => {
-    return `
-      body {
-        background: linear-gradient(135deg, #f6f8ff 0%, #e5eaff 100%) !important;
-      }
-      .reveal {
-        background: transparent !important;
-      }
-      .reveal .slides {
-        background: rgba(255, 255, 255, 0.3) !important;
-        backdrop-filter: blur(8px) !important;
-        border-radius: 1rem !important;
-        padding: 1rem !important;
-      }
-      .reveal .slides section {
-        color: #4a5568 !important;
-      }
-      .reveal h1, .reveal h2, .reveal h3 {
-        color: #9b87f5 !important;
-      }
-    `;
   };
 
   const updateLoadingMessage = () => {
@@ -218,10 +196,7 @@ const Presentation = () => {
       <PanelGroup direction="horizontal">
         <Panel defaultSize={60} minSize={30}>
           <iframe
-            srcDoc={`
-              ${extractCodeFromMarkdown(data?.reveal_js)}
-              <style>${getStylesForIframe()}</style>
-            `}
+            srcDoc={extractCodeFromMarkdown(data?.reveal_js)}
             className="w-full h-full border-0"
             title="Reveal.js Presentation"
             sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
