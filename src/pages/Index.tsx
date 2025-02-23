@@ -144,7 +144,10 @@ const Index = () => {
                     onToggle={handleToggleRecording}
                   />
                 </div>
-                <p className="text-lg font-normal text-gray-700 -mt-6">
+                <p className={cn(
+                  "text-lg font-normal text-gray-700 transition-all duration-300",
+                  isRecording ? "" : "-mt-12"
+                )}>
                   Just speak your topic, and CoCo will take care of the rest!
                 </p>
               </div>
