@@ -1,9 +1,8 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Download, Send } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Panel,
@@ -35,6 +34,7 @@ const Presentation = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const loadingMessageInterval = useRef<NodeJS.Timeout>();
 
@@ -93,6 +93,21 @@ const Presentation = () => {
       loadingMessageInterval.current = undefined;
     }
     setMessages(prev => prev.filter(msg => msg.source !== 'loading'));
+  };
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    setMessages(prev => [...prev, {
+      text: "Preparing your presentation for download...",
+      source: 'loading',
+      timestamp: Date.now()
+    }]);
+
+    setTimeout(() => {
+      setIsDownloading(false);
+      setMessages(prev => prev.filter(msg => msg.source !== 'loading'));
+      console.log("Download functionality to be implemented");
+    }, 2000);
   };
 
   const handleSendMessage = async () => {
@@ -208,16 +223,27 @@ const Presentation = () => {
 
         <Panel minSize={30}>
           <div className="flex flex-col h-full bg-white/90 backdrop-blur shadow-xl w-full">
-            <div className="flex items-center p-6 border-b">
+            <div className="flex items-center justify-between p-6 border-b">
+              <div className="flex items-center">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="mr-2"
+                  onClick={() => navigate('/')}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+                <h2 className="text-lg font-medium">Chat</h2>
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
-                className="mr-2"
-                onClick={() => navigate('/')}
+                onClick={handleDownload}
+                disabled={isDownloading}
+                className="text-gray-600 hover:text-gray-900"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <Download className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-medium">Chat</h2>
             </div>
 
             <ScrollArea className="flex-1 px-4">
