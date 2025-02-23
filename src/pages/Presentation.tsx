@@ -228,10 +228,10 @@ const Presentation = () => {
                     className={cn(
                       "p-4 rounded-xl",
                       message.source === 'user'
-                        ? "bg-[#7E69AB] text-white ml-8"
+                        ? "bg-white border border-gray-200 ml-8"
                         : message.source === 'loading' 
-                          ? "bg-gray-100 mr-8 animate-pulse" 
-                          : "bg-gray-100 mr-8"
+                          ? "bg-[#D3E4FD] mr-8 animate-pulse" 
+                          : "bg-[#D3E4FD] mr-8"
                     )}
                   >
                     {message.text}
