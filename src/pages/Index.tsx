@@ -25,6 +25,9 @@ const Index = () => {
   };
 
   const handleDisconnect = async () => {
+    // Add a delay to ensure all message state updates are processed
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     console.log('Conversation disconnected');
     console.log('Current messages:', messages);
     
@@ -43,7 +46,7 @@ const Index = () => {
       
       try {
         console.log('Starting API request...');
-        const response = await fetch('https://e40f-155-33-133-54.ngrok-free.app/research/presentation', {
+        const response = await fetch('https://56e5-2601-19b-780-2d10-b4fd-3895-61e-4d11.ngrok-free.app/research/presentation', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +99,7 @@ const Index = () => {
     
     setMessages(prev => {
       const newMessages = [...prev, { ...message, timestamp: Date.now() }];
-      console.log('📝 Messages updated:', newMessages.length);
+      console.log('📝 Messages updated, new count:', newMessages.length, 'messages:', newMessages);
       return newMessages;
     });
   };

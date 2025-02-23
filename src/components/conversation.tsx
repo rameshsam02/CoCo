@@ -19,25 +19,28 @@ export function Conversation({
   onDisconnect 
 }: ConversationProps) {
   const conversation = useConversation({
-    onConnect: () => {},
+    onConnect: () => {
+      console.log('🎤 Conversation connected');
+    },
     onDisconnect: () => {
       console.log('🎤 Conversation disconnected');
-      // Use Promise.resolve to ensure this runs after state updates
-      Promise.resolve().then(() => {
+      // Ensure we're fully disconnected before calling the handler
+      setTimeout(() => {
         if (onDisconnect) {
-          console.log('🎤 Calling disconnect handler');
+          console.log('🎤 Calling disconnect handler with conversation status:', conversation.status);
           onDisconnect();
         }
-      });
+      }, 300);
     },
     onMessage: (message) => {
+      console.log('🎤 Received message:', message);
       if (message.source === 'user') {
-        onMessage({
+        onMessage?.({
           text: message.message || "",
           source: 'user'
         });
       } else if (message.source === 'ai' || message.source === 'assistant') {
-        onMessage({
+        onMessage?.({
           text: message.message || "",
           source: 'agent'
         });
@@ -60,7 +63,7 @@ export function Conversation({
         console.log('🎤 Ending session');
         try {
           await conversation.endSession();
-          console.log('🎤 Session ended');
+          console.log('🎤 Session ended successfully');
         } catch (error) {
           console.error('Error ending session:', error);
         }
@@ -74,7 +77,7 @@ export function Conversation({
           await conversation.startSession({
             agentId: '33IwwA9g8LvxCOptQu73',
           });
-          console.log('🎤 Session started');
+          console.log('🎤 Session started successfully');
         } catch (error) {
           console.error('Error starting session:', error);
           onStopRecording();
@@ -92,7 +95,7 @@ export function Conversation({
         });
       }
     };
-  }, [isRecording]);
+  }, [isRecording, conversation.status]);
 
   return null;
 }
