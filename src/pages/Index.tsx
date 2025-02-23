@@ -8,6 +8,7 @@ import { Upload, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -106,10 +107,7 @@ const Index = () => {
   };
 
   return (
-    <>
-      <div className="main-background">
-        <div className="gradient-overlay" />
-      </div>
+    <AuroraBackground>
       <div className="relative min-h-screen w-full">
         {isProcessing && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -192,7 +190,7 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </>
+    </AuroraBackground>
   );
 };
 

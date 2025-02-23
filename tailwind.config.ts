@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
 
 export default {
   darkMode: ["class"],
@@ -80,33 +81,18 @@ export default {
           "0%": { transform: "scale(1)", opacity: "0.3" },
           "75%, 100%": { transform: "scale(2.5)", opacity: "0" },
         },
-        "pulse-subtle": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
         },
-        "spin-slow": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
+        progress: {
+          "0%": { width: "0%" },
+          "100%": { width: "100%" },
         },
-        "reverse-spin": {
-          "0%": { transform: "rotate(360deg)" },
-          "100%": { transform: "rotate(0deg)" },
-        },
-        wave: {
-          "0%, 100%": { transform: "scaleY(0.5)" },
-          "50%": { transform: "scaleY(1.2)" },
-        },
-        float: {
-          "0%": { transform: "translate(0, 0) scale(1)" },
-          "33%": { transform: "translate(10px, -10px) scale(1.2)" },
-          "66%": { transform: "translate(-10px, 10px) scale(0.8)" },
-          "100%": { transform: "translate(0, 0) scale(1)" },
-        },
-        "gradient-slow": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -114,14 +100,25 @@ export default {
         "ping-slow": "ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite",
         "ping-slower": "ping-slower 3s cubic-bezier(0, 0, 0.2, 1) infinite",
         "ping-slowest": "ping-slowest 4s cubic-bezier(0, 0, 0.2, 1) infinite",
-        "pulse-subtle": "pulse-subtle 3s ease-in-out infinite",
-        "spin-slow": "spin-slow 15s linear infinite",
-        "reverse-spin": "reverse-spin 12s linear infinite",
-        "wave": "wave 1.2s ease-in-out infinite",
-        "float": "float 3s ease-in-out infinite",
-        "gradient-slow": "gradient-slow 8s ease infinite",
+        "aurora": "aurora 60s linear infinite",
+        "progress": "progress 30s ease-in-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    addVariablesForColors
+  ],
 } satisfies Config;
+
+// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ":root": newVars,
+  });
+}
