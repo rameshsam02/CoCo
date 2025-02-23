@@ -34,8 +34,7 @@ export const Title = ({ isRecording }: TitleProps) => {
         isRecording ? "opacity-0 scale-95 h-0" : "opacity-100 scale-100"
       )}>
         <p className="text-lg text-gray-700 max-w-2xl text-center">
-          Your voice-powered research companion that transforms conversations into insights.
-          Just speak your topic, and watch as CoCo creates detailed presentation slides for you.
+          A voice-driven AI that listens, researches deeply, and transforms your ideas into well-crafted PowerPoint presentations—seamless and efficient.
         </p>
         <Tooltip>
           <TooltipTrigger>
