@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -42,7 +41,7 @@ const Index = () => {
       console.log('Making API call with prompt:', aiMessages);
       try {
         console.log('Starting API request...');
-        const response = await fetch('https://c01f-155-33-133-54.ngrok-free.app/research/presentation', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/research/presentation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
