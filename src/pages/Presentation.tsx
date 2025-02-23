@@ -1,23 +1,35 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Panel,
   PanelGroup,
   PanelResizeHandle
 } from "react-resizable-panels";
+import { Textarea } from "@/components/ui/textarea";
 
 interface PresentationData {
   markdown: string;
   reveal_js: string;
 }
 
+interface Message {
+  text: string;
+  source: 'user' | 'agent';
+  timestamp: number;
+}
+
 const Presentation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [data, setData] = useState<PresentationData | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (location.state?.presentationData) {
@@ -27,10 +39,44 @@ const Presentation = () => {
     }
   }, [location.state]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   const extractCodeFromMarkdown = (content: string | undefined) => {
     if (!content) return '';
     const match = content.match(/```[\s\S]*?\n([\s\S]*?)```/);
     return match ? match[1] : '';
+  };
+
+  const handleSendMessage = () => {
+    if (!input.trim()) return;
+    
+    // Add user message
+    const userMessage: Message = {
+      text: input.trim(),
+      source: 'user',
+      timestamp: Date.now()
+    };
+    setMessages(prev => [...prev, userMessage]);
+    setInput("");
+
+    // Simulate agent response (replace with actual agent integration)
+    setTimeout(() => {
+      const agentMessage: Message = {
+        text: "I'm here to help you with your presentation. What would you like to know?",
+        source: 'agent',
+        timestamp: Date.now()
+      };
+      setMessages(prev => [...prev, agentMessage]);
+    }, 1000);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
   };
 
   return (
@@ -58,18 +104,47 @@ const Presentation = () => {
               </Button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-4">
-                {data?.markdown && (
-                  <div className="rounded-lg bg-card p-4">
+            <div className="flex-1 overflow-hidden flex flex-col">
+              <ScrollArea className="flex-1 p-4">
+                <div className="space-y-4">
+                  {messages.map((msg, index) => (
                     <div 
-                      className="prose prose-sm max-w-none dark:prose-invert"
-                      dangerouslySetInnerHTML={{ 
-                        __html: data.markdown 
-                      }} 
-                    />
-                  </div>
-                )}
+                      key={msg.timestamp + index}
+                      className={cn(
+                        "p-3 rounded-lg text-sm", 
+                        msg.source === "agent" 
+                          ? "bg-blue-50 text-blue-800" 
+                          : "bg-gray-50 text-gray-800"
+                      )}
+                    >
+                      <span className="font-semibold">
+                        {msg.source === "agent" ? "AI: " : "You: "}
+                      </span>
+                      <div className="whitespace-pre-line">{msg.text}</div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              </ScrollArea>
+
+              <div className="p-4 border-t bg-white/50 backdrop-blur-sm">
+                <div className="relative">
+                  <Textarea
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ask me anything about the presentation..."
+                    className="pr-12 min-h-[80px] resize-none bg-white/80"
+                  />
+                  <Button
+                    size="icon"
+                    onClick={handleSendMessage}
+                    className="absolute right-2 bottom-2 h-8 w-8"
+                    disabled={!input.trim()}
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
