@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Conversation } from "@/components/conversation";
@@ -16,9 +16,11 @@ const Index = () => {
   const [messages, setMessages] = useState<{ text: string; source: string; timestamp: number }[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log('📱 Index component messages updated:', messages.length);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const handleToggleRecording = () => {
@@ -174,6 +176,7 @@ const Index = () => {
                     <div className="whitespace-pre-line">{msg.text}</div>
                   </div>
                 ))}
+                <div ref={messagesEndRef} />
               </div>
             </ScrollArea>
           </div>
