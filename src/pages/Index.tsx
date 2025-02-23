@@ -106,6 +106,25 @@ const Index = () => {
     }
   };
 
+  const handleTestTransition = async () => {
+    try {
+      const response = await fetch('/dummy.json');
+      const dummyData = await response.json();
+      navigate('/presentation', {
+        state: {
+          presentationData: dummyData
+        }
+      });
+    } catch (error) {
+      console.error('Error loading dummy data:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load dummy data."
+      });
+    }
+  };
+
   return (
     <AuroraBackground>
       <div className="relative min-h-screen w-full">
@@ -165,6 +184,9 @@ const Index = () => {
             <Button variant="ghost" size="lg" className="w-full mb-4 bg-blue-400/10 hover:bg-blue-400/20 transition-colors" onClick={() => document.getElementById("file-input")?.click()}>
               <Upload className="mr-2 h-5 w-5" />
               Upload Documents
+            </Button>
+            <Button variant="ghost" size="lg" className="w-full mb-4 bg-blue-400/10 hover:bg-blue-400/20 transition-colors" onClick={handleTestTransition}>
+              Test Presentation
             </Button>
             <input id="file-input" type="file" className="hidden" accept=".pdf,.doc,.docx,.txt,.rtf,.odt" onChange={handleFileUpload} />
             
