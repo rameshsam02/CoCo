@@ -104,16 +104,48 @@ const Presentation = () => {
   const handleDownload = async () => {
     setIsDownloading(true);
     setMessages(prev => [...prev, {
-      text: "Preparing your presentation for download...",
+      text: "Opening presentation in print mode...",
       source: 'loading',
       timestamp: Date.now()
     }]);
 
-    setTimeout(() => {
+    try {
+      const iframe = document.querySelector('iframe');
+      if (!iframe) throw new Error('Presentation iframe not found');
+
+      const baseUrl = window.location.origin;
+      const presentationHtml = extractCodeFromMarkdown(data?.reveal_js);
+      
+      const blob = new Blob([presentationHtml || ''], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      
+      window.open(`${blobUrl}?print-pdf`, '_blank');
+
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 1000);
+
+      setMessages(prev => [
+        ...prev.filter(msg => msg.source !== 'loading'),
+        {
+          text: "Presentation opened in print mode. Use your browser's print function (Ctrl/Cmd + P) to save as PDF.",
+          source: 'agent',
+          timestamp: Date.now()
+        }
+      ]);
+    } catch (error) {
+      console.error('Download error:', error);
+      setMessages(prev => [
+        ...prev.filter(msg => msg.source !== 'loading'),
+        {
+          text: "Sorry, there was an error opening the presentation in print mode. Please try again.",
+          source: 'agent',
+          timestamp: Date.now()
+        }
+      ]);
+    } finally {
       setIsDownloading(false);
-      setMessages(prev => prev.filter(msg => msg.source !== 'loading'));
-      console.log("Download functionality to be implemented");
-    }, 2000);
+    }
   };
 
   const handleSendMessage = async () => {
