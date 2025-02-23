@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -106,25 +107,6 @@ const Index = () => {
     }
   };
 
-  const handleTestTransition = async () => {
-    try {
-      const response = await fetch('/dummy.json');
-      const dummyData = await response.json();
-      navigate('/presentation', {
-        state: {
-          presentationData: dummyData
-        }
-      });
-    } catch (error) {
-      console.error('Error loading dummy data:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load dummy data."
-      });
-    }
-  };
-
   return (
     <AuroraBackground>
       <div className="relative min-h-screen w-full">
@@ -159,14 +141,6 @@ const Index = () => {
                 <div className="relative w-[360px] h-[360px] flex items-center justify-center">
                   <VoiceButton isRecording={isRecording} onToggle={handleToggleRecording} />
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="lg" 
-                  className="bg-blue-400/10 hover:bg-blue-400/20 transition-colors w-48"
-                  onClick={handleTestTransition}
-                >
-                  Test Presentation
-                </Button>
                 <p className={cn("text-base font-normal text-center -mt-2", isRecording ? "" : "")}>
                   Just speak your thoughts, and CoCo will take care of the rest!
                 </p>
