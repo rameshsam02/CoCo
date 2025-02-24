@@ -6,7 +6,7 @@
 
 ## Features
 
-- **Conversational Data Collection**: Engage in a voice or text-based call where CoCo gathers detailed information about your business or industry of interest.
+- **Conversational Data Collection**: Engage in a voice call where CoCo gathers detailed information about your business or industry of interest.
 - **Multi-Agent Research**: A manager agent orchestrates a team of specialized agents to conduct in-depth research tailored to your input.
 - **Detailed Presentations**: Receive a polished presentation with factual data, resources, and insights generated from the research.
 - **Natural Language PPT Editor**: Edit and customize your presentation using simple, natural language commands.
@@ -36,7 +36,7 @@
 
 ## How It Works
 
-1. **Start a Call**: Interact with CoCo via voice or text, providing details about the business or industry you’re interested in.
+1. **Start a Call**: Interact with CoCo via voice, providing details about the business or industry you’re interested in.
 2. **Data Hand-off**: The conversation data is passed to a manager agent overseeing a team of `CodeAgents`.
 3. **Deep Research**: The agents scour resources, analyze data, and compile a detailed plan.
 4. **Presentation Delivery**: CoCo generates a Reveal.js-based presentation with actionable insights and references.
